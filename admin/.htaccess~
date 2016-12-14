@@ -1,0 +1,16 @@
+# 2013-01-14
+
+AuthType Basic
+AuthName "Enter the Vault"
+AuthUserFile /kunden/homepages/16/d450349504/htdocs/vault/.htpasswd
+# AuthUserFile /home/futurelab/public_html/www/int2byte.de/vault/.htpasswd
+Require valid-user
+
+Options +Indexes
+
+# AddCharset UTF-8 .txt
+# AddDefaultCharset UTF-8
+
+
+ErrorDocument 404 /system/Error.404.php
+ErrorDocument 401 /system/Error.401.php

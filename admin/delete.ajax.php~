@@ -1,0 +1,51 @@
+<?php
+/**
+ * @author  Ikaros Kappler
+ * @date    2016-11-30
+ * @version 1.0.0
+ **/
+
+require_once( "../database/bootstrap/autoload.php" );
+
+header( 'Content-Type: text/json; charset=utf-8' );
+
+//use Illuminate\Database\Eloquent\Model;
+//$notes = Note::all();
+//print_r( $notes );
+
+if( !array_key_exists('id',$_GET) ) {
+    header( 'HTTP/1.1 400 Bad Request' );
+    echo json_encode( array( 'message' => "Param 'id' is missing." ) );
+    die();
+}
+
+$id = $_GET['id'];
+
+if( !is_numeric($id) ) {
+    header( 'HTTP/1.1 400 Bad Request' );
+    echo json_encode( array( 'message' => "Param 'id' is not numeric." ) );
+    die();
+}
+
+
+
+// Check if there are already more than 10 notes from withing the last 5 minutes
+$affected = Note::
+      where('id',$id)
+    ->whereNull('deleted_at')
+    ->take(1)
+    ->update( array( 'deleted_at' => DB::raw('NOW()') ) );
+
+//->save();
+
+if( !$affected ) {
+    header( 'HTTP/1.1 404 Not Found' );
+    echo json_encode( array( 'message' => 'ID not found.' ) );
+    die();
+}
+
+
+echo json_encode( array( "message" => "Note marked as deleted." ) );
+
+
+?>

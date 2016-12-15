@@ -1,9 +1,8 @@
 # 2013-01-14
 
 AuthType Basic
-AuthName "Enter the Vault"
-AuthUserFile /kunden/homepages/16/d450349504/htdocs/vault/.htpasswd
-# AuthUserFile /home/futurelab/public_html/www/int2byte.de/vault/.htpasswd
+AuthName "Please authenticate"
+AuthUserFile /path/to/your/.htpasswd
 Require valid-user
 
 

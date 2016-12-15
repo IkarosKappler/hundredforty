@@ -133,6 +133,10 @@ a.hash-tag {
   
 }
 
+.clickable {
+    cursor          : pointer;
+}
+
 .invisible {
     opacity         : 0;
     filter          : alpha(opacity=0);

@@ -79,5 +79,11 @@ a.boxclose{
 }
 
 a.hash-tag {
+    color           : #6b8cb6;
+}
+
+
+/* Custom Theme Settings */
+a {
     color           : #3a5474;
 }

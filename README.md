@@ -1,3 +1,8 @@
+# hundretforty
+
+This is a simple note remembererererererer.
+
+
 
 Todos:
  * Write docs for the create-script.
@@ -6,6 +11,18 @@ Todos:
  * Write docs for the get-script.
  * Write docs for the main.js file.
 
+
+Files
+-----
+ ./database/.env
+ This file should contain your DB credentials
+  APP_KEY=SomeRandomString
+  DB_USERNAME=
+  DB_PASSWORD=
+  DB_DATABASE=
+  DB_HOST=
+
+.
 
 [2016-12-13, Ika]
  * Added 'category' and hash (sha256) fields.

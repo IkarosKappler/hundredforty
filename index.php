@@ -10,11 +10,14 @@
     <meta name="date" content="2016-12-01" />
 
     <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
     <script src="js/jquery-confirm.min.js"></script>
     <script src="js/jquery-linkify.js"></script>
     <script src="js/jquery-hashtagify.js"></script>
     <script src="js/function.getURIParams.js"></script>
     <script src="js/main.js"></script>
+    <!-- <link rel="stylesheet" type="text/css" media="screen" href="css/jquery-ui.css" /> -->
+    <link rel="stylesheet" type="text/css" media="screen" href="css/dialog.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="css/jquery-confirm.min.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="css/style.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="css/theme.blue.css" />
@@ -43,6 +46,11 @@
          <button id="btn-more">Load more</button>
          <div id="loading-more" class="invisible"></div>
 
+         <!-- Invisible by default -->
+         <div id="dialog" style="display: none;">
+            DIALOG
+         </div>
+      
          <div id="hint">
             Hello there. I just wrote this app and wanted to give my jQuery and Eloquent skills a try. This app stores your 140 character message and displays it here. I hope you like it.<br/>
            <br/>

@@ -16,6 +16,7 @@ Files
 -----
  ./database/.env
  This file should contain your DB credentials
+ ```
   APP_KEY=SomeRandomString
   DB_USERNAME=
   DB_PASSWORD=

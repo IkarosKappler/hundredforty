@@ -21,11 +21,11 @@ body {
     visibility  : hidden;
 }
 
-#hundretforty h1 {
+#hundredforty h1 {
     
 }
 
-div#hundretforty {
+div#hundredforty {
     width       : 25%;
     margin      : 0 auto;
 }
@@ -133,7 +133,37 @@ a.hash-tag {
   
 }
 
+.clickable {
+    cursor          : pointer;
+}
+
 .invisible {
     opacity         : 0;
     filter          : alpha(opacity=0);
+}
+
+.no-display {
+    display         : none;
+}
+
+/* This class is dynamically attached to the dialog wrapper. */
+.dialog {
+    background-color   : #ffffff;
+    position           : fixed;
+    top                : 10px;
+    border             : none !important;
+    font-family        : Monospace;
+}
+
+#dialog {
+    padding            : 40px;
+}
+
+.ui-widget-header {
+    background-color   : rgba(255,255,255,0.0);
+    border             : 0;
+}
+
+span.ui-button-icon-space {
+    display            : block;
 }

@@ -21,11 +21,11 @@ body {
     visibility  : hidden;
 }
 
-#hundretforty h1 {
+#hundredforty h1 {
     
 }
 
-div#hundretforty {
+div#hundredforty {
     width       : 25%;
     margin      : 0 auto;
 }
@@ -76,7 +76,8 @@ div.note-date a.inner-link {
 }
 
 div.note-data {
-  /* NOOP */ 
+    /* NOOP */
+    text-align : left;
 }
 
 div#loading-send {
@@ -100,7 +101,7 @@ div#loading-more {
     
     -ms-word-break  : break-all;
     /* This is the dangerous one in WebKit, as it breaks things wherever */
-    word-break      : break-all;
+    /* word-break      : break-all; */
     /* Instead use this non-standard one: */
     word-break      : break-word;
     
@@ -140,4 +141,30 @@ a.hash-tag {
 .invisible {
     opacity         : 0;
     filter          : alpha(opacity=0);
+}
+
+.no-display {
+    display         : none;
+}
+
+/* This class is dynamically attached to the dialog wrapper. */
+.dialog {
+    background-color   : #ffffff;
+    position           : fixed;
+    top                : 10px;
+    border             : none !important;
+    font-family        : Monospace;
+}
+
+#dialog {
+    padding            : 40px;
+}
+
+.ui-widget-header {
+    background-color   : rgba(255,255,255,0.0);
+    border             : 0;
+}
+
+span.ui-button-icon-space {
+    display            : block;
 }

@@ -18,11 +18,11 @@ body {
 
 }
 
-#hundretforty h1 {
+#hundredforty h1 {
     
 }
 
-div#hundretforty {
+div#hundredforty {
 
 }
 
@@ -86,4 +86,12 @@ a.hash-tag {
 /* Custom Theme Settings */
 a {
     color           : #3a5474;
+}
+
+.dialog {
+    background-color : #6b8cb6; /* #44658c */
+    background: -webkit-radial-gradient(#6b8cb6, #3a5474); /* Safari 5.1 to 6.0 */
+    background: -o-radial-gradient(#6b8cb6, #3a5474);      /* For Opera 11.6 to 12.0 */
+    background: -moz-radial-gradient(#6b8cb6, #3a5474);    /* For Firefox 3.6 to 15 */
+    background: radial-gradient(#6b8cb6, #3a5474);         /* Standard syntax */
 }

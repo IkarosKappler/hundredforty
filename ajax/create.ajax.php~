@@ -20,6 +20,7 @@ if( !array_key_exists('note',$_GET) ) {
 }
 
 $note = $_GET['note'];
+$cat  = (array_key_exists('cat',$_GET)?$_GET['cat']:'');
 
 if( strlen($note) > 140 ) {
     header( 'HTTP/1.1 400 Bad Request' );
@@ -32,6 +33,8 @@ if( !strlen($note) ) {
     die();
 }
 
+
+$sha256 = hash( 'sha256', $note );
 
 
 // Check if there are already more than 10 notes from withing the last 5 minutes
@@ -50,6 +53,8 @@ if( count($list) > 10 ) {
 
 
 $noteObject = new Note( array( 'data'           => $note,
+                               'category'       => $cat,
+                               'sha256'         => $sha256,
                                'remote_address' => $_SERVER['REMOTE_ADDR']
 ) );
 $noteObject->save();

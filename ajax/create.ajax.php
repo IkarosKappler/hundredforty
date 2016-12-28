@@ -34,7 +34,7 @@ if( !strlen($note) ) {
 }
 
 
-$sha256 = hash( 'sha256', $note );
+$sha256 = hash( 'sha256', time().'_'.$_SERVER['REMOTE_ADDR']."$".$note );
 
 
 // Check if there are already more than 10 notes from withing the last 5 minutes
@@ -67,7 +67,7 @@ echo json_encode( array( "message" => "Note stored (" . strlen($note) . " chars)
 
 // Send notification email
 mail( 'info@int2byte.de',
-      'Note stored (id='.$noteObject->id.').',
+      'Note stored (id='.$noteObject->id.'), cat='.$cat.'.',
       'Note was stored (remote_address=' . $noteObject->remote_address . ")\n".
         'data: ' . $note
 );

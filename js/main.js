@@ -20,13 +20,15 @@ $( document ).ready( function() {
     // category ''.
     var URI_PARAMS = getURIParams();
     var CATEGORY   = ('cat' in URI_PARAMS) ? URI_PARAMS['cat'].toLowerCase() : '';
+    var ID         = ('id' in URI_PARAMS) ? URI_PARAMS['id'] : '';
+    var KEY        = ('key' in URI_PARAMS) ? URI_PARAMS['key'] : '';
 
     // Fetch frequently asked questions ... ehm ... fetch frequently used DOM objects.
-    var $hundretforty = $( '#hundretforty' );                    // The main container.
-    var $container    = $hundretforty.find( '#notes' );          // The sub container for all notes.
+    var $hundredforty = $( '#hundredforty' );                    // The main container.
+    var $container    = $hundredforty.find( '#notes' );          // The sub container for all notes.
     var $template     = $container.find( '#_template-note' );    // The note template.
     var $btnMore      = $( '#btn-more' );                        // The button for loading more notes.
-    var $inputArea    = $hundretforty.find( '#note-text' );      // The text input area (max 140 chars).
+    var $inputArea    = $hundredforty.find( '#note-text' );      // The text input area (max 140 chars).
     var $_loading     = $( '<img/>', { src : 'img/loading3.svg', width : 32, height : 32 } ); // A loading animation.
 
     
@@ -37,7 +39,7 @@ $( document ).ready( function() {
     
     
     // Install 'send' button handler.
-    $hundretforty.find( '#btn-sendnote' ).click( function() {
+    $hundredforty.find( '#btn-sendnote' ).click( function() {
 	if( !$inputArea.val() ) {
 	    setErrorStatus( "You should enter some text." );
 	    return;
@@ -132,11 +134,14 @@ $( document ).ready( function() {
     }
     
     var createNoteNode = function( noteData ) {
-	var $container = $hundretforty.find( '#notes' );
+	var $container = $hundredforty.find( '#notes' );
 
 	var rand       = noteData.id; 
 	var $note      = $template.clone().removeClass('hidden').attr('id','note_'+rand);
-	var $showLink  = $( '<span/>', { name : 'note_'+noteData.id } ).addClass('inner-link').addClass('clickable').html( '&#x1f517;' ).click( function() { showNoteData(noteData); } );
+	var $showLink  = $( '<a/>', { href   : '?cat=' + encodeURIComponent(CATEGORY) + '&id=' + encodeURIComponent(noteData.id) + '&key=' + encodeURIComponent(noteData.sha256),
+				      name   : 'note_'+noteData.id,
+				      target : '_blank'
+				    } ).addClass('inner-link').addClass('clickable').html( '&#x1f517;' );    
 	$note.find( '#_template-date' ).attr('id','template-date-'+rand).empty().html( $showLink ).append( ' '+noteData.created_at );
 	$note.find('a.boxclose').click( function() { requestDelete(noteData); } ); 
 	$note.find( '#_template-data' ).attr('id','template-data-'+rand).empty().html( formatText(noteData.data) ).linkify().hashtagify();
@@ -199,15 +204,20 @@ $( document ).ready( function() {
     };
 
 
-    var showNoteData = function( noteData ) {
+    var showNoteDialog = function( noteData ) {
 	setErrorStatus( 'Sorry, not yet implemented.' );
-
+	var $node = createNoteNode(noteData);
 	$( '#dialog' ).dialog( {
-	    closeText : 'X',
-	    width     : '35%',
-	    height    : 400,
-	    modal     : true
-	} );
+	    autoOpen    : false,
+	    dialogClass : 'dialog',
+	    draggable   : true,
+	    resizeable  : false,
+	    closeText   : 'X',
+	    width       : '35%',
+	    height      : 300,
+	    modal       : true  // Not working?
+	} ).append( $node );
+	//$( '#dialog' ).dialog('open');
     }
     
     
@@ -227,4 +237,23 @@ $( document ).ready( function() {
     $btnMore.data('skip',0);
     $btnMore.data('limit',7);
     loadNotes( $btnMore.data('skip'), $btnMore.data('limit') );
+
+
+    /**
+     * If an ID is passed load the article.
+     **/
+    if( ID ) {
+	var jqxhr = $.getJSON( 'ajax/get.ajax.php?cat=' + encodeURIComponent(CATEGORY) + '&id=' + encodeURIComponent(ID) + '&key=' + encodeURIComponent(KEY) )
+	    .done( function( json ) {
+		showNoteDialog(json);
+		$( '#dialog' ).dialog('open');
+	    } )
+	    .fail( function(jqxhr, textStatus, error) {
+		setErrorStatus( error + ": " + textStatus + " " + jqxhr.responseJSON.message );
+	    } )
+	    .always( function() {
+		//$btnMore.prop( 'disabled', false );
+		//$loadingMore.addClass('invisible');
+	    } );
+    }
 } );

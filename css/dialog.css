@@ -3,12 +3,7 @@
  * @date 2016-12-15
  **/
 
-#dialog {
-    background-color   : #ff0000;
-}
-
 .ui-dialog-titlebar {
-    background-color   : #ffffff;
     text-align         : right;
 }
 

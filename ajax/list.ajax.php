@@ -1,4 +1,7 @@
 <?php
+/**
+ * @modified 2017-01-05 Additionally returning 'created_at' as a unix timestamp.
+ **/
 
 header( "Content-Type: text/json; charset=utf-8" );
 
@@ -29,7 +32,8 @@ $cat = (array_key_exists('cat',$_GET) ? $_GET['cat'] : '');
 //$results = DB::select('select * from notes;', array(1));
 
 $list = Note::
-    whereNull('deleted_at')
+      select(DB::raw('*,UNIX_TIMESTAMP(created_at) AS created_at_ts'))
+    ->whereNull('deleted_at')
     ->where('category',$cat)
     ->skip($skip)
     ->take($limit)

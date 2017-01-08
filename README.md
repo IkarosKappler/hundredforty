@@ -11,6 +11,28 @@ Todos:
  * Write docs for the get-script.
  * Write docs for the main.js file.
 
+Install
+-------
+ * Create the database <database> (I used MySQL).
+ * Download the notes_struct.sql file containing the table structure.
+ * Create the table:
+    mysql --user <user> --database <database> -p < notes_struct.sql
+ * Upload all files from this repository to your www-directory (e.g. to {www-root}/hundredforty/).
+ * Edit the database/.env file and enter your database credentials.
+ * Done.
+
+
+File Uploads
+------------
+Note that there currently is no interface for file uploads. Even though the functionality exists.
+
+Simple file uploads (like images) work by default via the /ajax/imageupload.ajax.php interface. If
+you want images automatically to be resized after upload you should install Imagemagick and the PHP
+imagemagick library/wrapper.
+
+Test uploads in
+ * /tests/test_imageupload.php
+
 
 Files
 -----

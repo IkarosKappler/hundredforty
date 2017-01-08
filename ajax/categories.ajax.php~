@@ -1,0 +1,31 @@
+<?php
+/**
+ * @modified 2017-01-05 Additionally returning 'created_at' as a unix timestamp.
+ **/
+
+$_CATWGORY_BLACKLIST = array( );
+
+header( "Content-Type: text/json; charset=utf-8" );
+
+require_once( "../database/bootstrap/autoload.php" );
+
+
+
+    
+//$results = DB::select('select * from notes;', array(1));
+
+$list = DB::table('notes')
+    ->select( array('category') )
+    ->distinct()
+    ->whereNull('deleted_at')
+    ->orderBy('category','desc')
+    ->get()
+    ->toArray();
+
+//print_r( $list );
+$result = array( 'meta' => array( 'skip' => $skip, 'limit' => $limit ),
+                 'list' => $list );
+echo json_encode( $result, JSON_PRETTY_PRINT );
+
+
+?>

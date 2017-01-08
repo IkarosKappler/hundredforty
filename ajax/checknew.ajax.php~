@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * This script checks if there are new records since
+ * a given time stamp.
+ **/
 header( "Content-Type: text/json; charset=utf-8" );
 
 require_once( "../database/bootstrap/autoload.php" );

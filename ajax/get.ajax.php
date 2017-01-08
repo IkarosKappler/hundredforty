@@ -1,9 +1,10 @@
 <?php
 /**
- * @author  Ikaros Kappler
- * @date    2016-12-13
- * @license CC-BY-SA
- * @version 1.0.0
+ * @author   Ikaros Kappler
+ * @date     2016-12-13
+ * @modified 2017-01-05 Additionally returning the 'created_at' field as a unix timestamp.
+ * @license  CC-BY-SA
+ * @version  1.0.1
  **/
 header( "Content-Type: text/json; charset=utf-8" );
 
@@ -37,7 +38,8 @@ $cat = (array_key_exists('cat',$_GET)?$_GET['cat']:'');
 
 
 $note = Note::
-        whereNull('deleted_at')
+      select(DB::raw('*,UNIX_TIMESTAMP(created_at) AS created_at_ts'))
+      ->whereNull('deleted_at')
       ->where('id',$id)
       //->where('category',$cat)
       ->where('sha256',$key)

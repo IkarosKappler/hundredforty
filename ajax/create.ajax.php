@@ -9,18 +9,22 @@ require_once( "../database/bootstrap/autoload.php" );
 
 header( 'Content-Type: text/json; charset=utf-8' );
 
-//use Illuminate\Database\Eloquent\Model;
-//$notes = Note::all();
-//print_r( $notes );
 
-if( !array_key_exists('note',$_GET) ) {
+if( strtoupper($_SERVER['REQUEST_METHOD']) != 'POST' ) {
+    header( 'HTTP/1.1 400 Bad Request' );
+    echo json_encode( array( 'message' => "Only POST requests supported." ) );
+    die();
+}
+
+if( !array_key_exists('note',$_POST) ) {
     header( 'HTTP/1.1 400 Bad Request' );
     echo json_encode( array( 'message' => "Param 'note' is missing." ) );
     die();
 }
 
-$note = $_GET['note'];
-$cat  = (array_key_exists('cat',$_GET)?$_GET['cat']:'');
+$note       = $_POST['note'];
+$cat        = (array_key_exists('cat',$_POST)?$_POST['cat']:'');
+$image_refs = (array_key_exists('image_refs',$_POST) ? $_POST['image_refs'] : '{}' );
 
 if( strlen($note) > 140 ) {
     header( 'HTTP/1.1 400 Bad Request' );
@@ -55,10 +59,12 @@ if( count($list) > 10 ) {
 $noteObject = new Note( array( 'data'           => $note,
                                'category'       => $cat,
                                'sha256'         => $sha256,
-                               'remote_address' => $_SERVER['REMOTE_ADDR']
+                               'remote_address' => $_SERVER['REMOTE_ADDR'],
+                               'image_refs'     => $image_refs
 ) );
 $noteObject->save();
 
+$noteObject->created_at_ts = strtotime( $noteObject->created_at );
 
 echo json_encode( array( "message" => "Note stored (" . strlen($note) . " chars).",
 'note' => $noteObject

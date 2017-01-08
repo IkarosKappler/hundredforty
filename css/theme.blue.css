@@ -37,6 +37,11 @@ textarea#note-text {
 button#btn-sendnote {
   
 }
+
+button#btn-loadnew {
+
+}
+
 button#btn-more {
    
 }
@@ -45,6 +50,18 @@ button#btn-more {
 #error-status {
     color               : #c5ab8b;
     /* text-shadow         : 4px 4px; */
+}
+
+div#category-list { 
+
+}
+
+div#category-list h4 {
+
+}
+
+div#category-list > ul {
+    
 }
 
 div.note-container {

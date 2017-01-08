@@ -36,9 +36,15 @@
          </div>
          <div id="loading-send" class="invisible"></div>
          <div id="error-status"></div>
+         <div id="category-list">
+            <h4>Categories</h4>
+            <ul></ul>
+         </div>
       
          <!-- Invisible by default -->
          <div id="dialog" class="no-display"></div>
+
+         <button id="btn-loadnew">Load new</button>
       
          <div id="notes">
             <div id="_template-note" class="note-container hidden">
@@ -61,7 +67,7 @@
            and the other ordinary stuff<br/>
            HTML5<br/>
            Javascript<br/>
-           PHP<br/>
+           PHP 7.0<br/>
            MySQL<br/>
            AJAX<br/>
            CSS3<br/>

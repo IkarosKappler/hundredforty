@@ -41,30 +41,51 @@ textarea#note-text {
 }
 
 button#btn-sendnote {
-    /*float : right;*/
+
+}
+
+button#btn-loadnew {
+    margin-top    : 25px; 
+    visibility    : hidden;
 }
 
 button#btn-more {
-    margin-top : 10px;
-    /*float      : right;*/
+    margin-top    : 10px;
 }
 
 div#sub-input {
-    width      : 100%;
-    text-align : right;
+    width         : 100%;
+    text-align    : right;
 }
 
 #error-status {
     color         : #a80000;
 }
 
+div#category-list { 
+    height            : 0px;
+    overflow          : visible;
+    margin-left       : 110%;
+}
+
+div#category-list h4 {
+    margin-bottom     : -0.6em;
+}
+
+div#category-list > ul {
+    list-style-type   : none;
+    margin-left       : 0px;
+    padding-left      : 0px;
+}
+
 div.note-container {
-    width         : 100%;
-    border        : 1px solid black;
-    margin-top    : 25px;
-    border-radius : 4px;
-    box-sizing    : border-box;
-    padding       : 6px;
+    width             : 100%;
+    border            : 1px solid black;
+    margin-top        : 12px;
+    margin-bottom     : 12px;
+    border-radius     : 4px;
+    box-sizing        : border-box;
+    padding           : 6px;
 }
 
 div.note-date {

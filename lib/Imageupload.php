@@ -10,18 +10,10 @@
  *
  * @note crop does not yet work. Implement Imagick::crop(...) for this.
  **/
-//namespace Matriphe\Imageupload;
 
-//use \Config;
-//use \File;
-//use \Log;
-//use \Illuminate\Support\Str;
-
-use yii\imagine;
-use yii\imagine\Image;
-//use \Imagine;
-//use \Imagine\Image;
-use Imagine\Image\Box;
+//use yii\imagine;
+//use yii\imagine\Image;
+//use Imagine\Image\Box;
 
 class Imageupload {
 
@@ -42,6 +34,9 @@ class Imageupload {
       $this->suffix = Config::get('imageupload.suffix',true);
       $this->exif = Config::get('imageupload.exif', false);
       $this->uribase = Config::get('imageupload.uribase', public_uri().'/uploads/images');
+      $this->fileowner = Config::get('imageupload.fileowner', null );
+      $this->filegroup = Config::get('imageupload.filegroup', null );
+      //$this->fileperms 
           
       // Now create the instance
       // HACKED
@@ -80,6 +75,7 @@ class Imageupload {
   }
 
   public function upload($filesource, $newfilename=null, $dir=null) {
+      //echo "newfilename=" . $newfilename . "\n";
     $isPathOk = $this->checkPathIsOk($this->uploadpath,$dir);
     $isImage = $this->checkIsImage($filesource);
 
@@ -106,13 +102,13 @@ class Imageupload {
             $this->results['filename'] = strtotime('now').'.'.$this->results['original_extension'];
             break;
           case 'custom':
-            $this->results['filename'] = (!empty($newfilename) ? $newfilename.'.'.$this->results['original_extension'] : $this->results['original_filename']);
+            $this->results['filename'] = (!empty($newfilename) ? $newfilename : $this->results['original_filename']);
             break;
           default:
               $this->results['filename']= $this->results['original_filename'];
         }
 
-        //echo "Moving file '" . $this->results['path'] . "' to '" . $this->results['filename'] . "'.";
+
         $uploaded = $filesource->move( $this->results['path'], $this->results['filename'] );
         if ($uploaded)
         {
@@ -124,6 +120,8 @@ class Imageupload {
           $this->results['original_width'] = $width;
           $this->results['original_height'] = $height;
 
+          $this->setFilePermissions( $this->results['path'] . DIRECTORY_SEPARATOR . $this->results['filename'] );
+
           $this->createDimensions($this->results['original_filepath']);
         } else {
           $this->results['error'] = 'File ' . $this->results['original_filename '].' is not uploaded.';
@@ -133,6 +131,15 @@ class Imageupload {
     }
 
     return $this->results;
+  }
+
+  protected function setFilePermissions($filepath) {
+      try {
+          //chown( $filepath, $this->fileowner );
+          //chgrp( $filepath, $this->filegroup );
+      } catch( Exception $e ) {
+          
+      }
   }
 
   protected function createDimensions($filesource) {

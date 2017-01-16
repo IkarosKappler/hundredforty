@@ -17,7 +17,10 @@
 _DISPLAY_LIMIT        = 7;
 
 _ALLOW_FILE_UPLOADS   = true;
+
+// Enter your upload script location here.
 _IMAGE_URL_BASE       = 'https://files.func.name';
+
 _UPLOAD_URL           = _IMAGE_URL_BASE + '/ajax/imageupload.ajax.php';
 
 Dropzone.autoDiscover = false;

@@ -1,4 +1,4 @@
-# hundretforty
+# hundredforty
 
 This is a simple note remembererererererer.
 
@@ -16,6 +16,7 @@ Todos:
  * Hashtag search.
  * DONE. Image uploads.
  * URL shortener.
+ * Handle generic file uploads that do not return thumbnails.
 
 Files
 -----

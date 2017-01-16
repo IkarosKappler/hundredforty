@@ -30,7 +30,43 @@ Files
   DB_HOST=
 ```
 
-.
+HTML
+----
+```html
+    <div id="hundredforty">
+      <h1>//hundredforty//</h1>
+         <div id="input-container">
+            <textarea id="note-text" maxlength="140" placeholder="Deine Nachricht | Your message"></textarea><br/>
+            <div id="sub-input">
+               <button id="btn-sendnote">Send</button>
+               <span id="textlength">0</span>/140
+            </div>
+            <div id="upload-widget" class="dropzone"></div>
+         </div>
+         <div id="loading-send" class="invisible"></div>
+         <div id="error-status"></div>
+         <div id="category-list">
+            <h4>Categories</h4>
+            <ul></ul>
+         </div>
+      
+         <!-- Invisible by default -->
+         <div id="dialog" class="no-display"></div>
+
+         <button id="btn-loadnew">Load new</button>
+      
+         <div id="notes">
+            <div id="_template-note" class="note-container hidden">
+               <a class="boxclose"></a>
+               <div id="_template-date" class="note-date"></div>
+               <div id="_template-data" class="note-data dont-break-out"></div>
+               <div id="_template-media"></div>
+            </div>
+         </div>
+         <button id="btn-more">Load more</button>
+         <div id="loading-more" class="invisible"></div>
+   </div>
+```
 
 [2017-01-16, Ika, v1.0.5]
  * Added image uploads.

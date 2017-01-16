@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: db658737376.db.1and1.com
--- Generation Time: Dec 15, 2016 at 05:03 PM
--- Server version: 5.5.52-0+deb7u1-log
--- PHP Version: 5.4.45-0+deb7u5
+-- Erstellungszeit: 16. Jan 2017 um 12:49
+-- Server Version: 5.5.53-0+deb7u1-log
+-- PHP-Version: 5.4.45-0+deb7u6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,13 +17,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `db658737376`
+-- Datenbank: `db658737376`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `notes`
+-- Tabellenstruktur für Tabelle `notes`
 --
 
 CREATE TABLE IF NOT EXISTS `notes` (
@@ -34,12 +34,15 @@ CREATE TABLE IF NOT EXISTS `notes` (
   `category` varchar(256) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT 'A category.',
   `sha256` varchar(64) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT 'A hash.',
   `remote_address` varchar(40) CHARACTER SET utf32 COLLATE utf32_unicode_ci NOT NULL DEFAULT '',
+  `referrer` varchar(256) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT 'The HTTP referrer website.',
   `deleted_at` timestamp NULL DEFAULT NULL,
+  `image_refs` varchar(4096) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `deleted_at` (`deleted_at`),
-  KEY `category` (`category`(255),`sha256`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=112 ;
+  KEY `category` (`category`(255),`sha256`),
+  KEY `referrer` (`referrer`(255))
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=243 ;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+--
+-- Daten für Tabelle `notes`
+--

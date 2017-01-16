@@ -15,8 +15,7 @@
     <script src="js/jquery-linkify.js"></script>
     <script src="js/jquery-hashtagify.js"></script>
     <script src="js/function.getURIParams.js"></script>
-    <!-- <script src="js/dropzone.js"></script> -->
-    <script src="https://files.func.name/js/dropzone.js"></script>
+    <script src="js/dropzone.js"></script>
     <script src="js/main.js"></script>
 
     <link rel="stylesheet" type="text/css" media="screen" href="css/jquery-ui.css" />

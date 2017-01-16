@@ -30,6 +30,10 @@ Files
   DB_HOST=
 ```
 
+Include the script
+------------------
+
+
 HTML
 ----
 ```html

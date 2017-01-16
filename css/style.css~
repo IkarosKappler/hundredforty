@@ -40,31 +40,83 @@ textarea#note-text {
     height      : 80px;
 }
 
+#upload-widget {
+    width       : 200%;
+    margin-left : -50%;
+    display     : flex;
+    align-items : center;
+    height      : 100px;
+    border      : 1px dashed black;
+    display     : none;  /* Initially invisible */
+}
+
+.dropzone .dz-preview .dz-image {
+    /* Use the same sizes as in the main.js script used for the image creation (dropzone). */
+    width             : 64px;
+    height            : 64px;
+    background-color  : rgba(0,0,0,0);
+}
+
+.dropzone .dz-preview.dz-image-preview {
+    background-color  : rgba(0,0,0,0);
+    text-align        : center;
+}
+
+.dz-image {
+    margin-left       : auto;
+    margin-right      : auto;
+}
+
+.dz-remove {
+    margin-top        : -80px;
+}
+
 button#btn-sendnote {
-    /*float : right;*/
+
+}
+
+button#btn-loadnew {
+    margin-top        : 25px; 
+    visibility        : hidden;
 }
 
 button#btn-more {
-    margin-top : 10px;
-    /*float      : right;*/
+    margin-top        : 10px;
 }
 
 div#sub-input {
-    width      : 100%;
-    text-align : right;
+    width             : 100%;
+    text-align        : right;
 }
 
 #error-status {
-    color         : #a80000;
+    color             : #a80000;
+}
+
+div#category-list { 
+    height            : 0px;
+    overflow          : visible;
+    margin-left       : 110%;
+}
+
+div#category-list h4 {
+    margin-bottom     : -0.6em;
+}
+
+div#category-list > ul {
+    list-style-type   : none;
+    margin-left       : 0px;
+    padding-left      : 0px;
 }
 
 div.note-container {
-    width         : 100%;
-    border        : 1px solid black;
-    margin-top    : 25px;
-    border-radius : 4px;
-    box-sizing    : border-box;
-    padding       : 6px;
+    width             : 100%;
+    border            : 1px solid black;
+    margin-top        : 12px;
+    margin-bottom     : 12px;
+    border-radius     : 4px;
+    box-sizing        : border-box;
+    padding           : 6px;
 }
 
 div.note-date {
@@ -76,7 +128,8 @@ div.note-date a.inner-link {
 }
 
 div.note-data {
-  /* NOOP */ 
+    /* NOOP */
+    text-align : left;
 }
 
 div#loading-send {
@@ -100,7 +153,7 @@ div#loading-more {
     
     -ms-word-break  : break-all;
     /* This is the dangerous one in WebKit, as it breaks things wherever */
-    word-break      : break-all;
+    /* word-break      : break-all; */
     /* Instead use this non-standard one: */
     word-break      : break-word;
     

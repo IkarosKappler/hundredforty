@@ -15,10 +15,14 @@
     <script src="js/jquery-linkify.js"></script>
     <script src="js/jquery-hashtagify.js"></script>
     <script src="js/function.getURIParams.js"></script>
+    <!-- <script src="js/dropzone.js"></script> -->
+    <script src="https://files.func.name/js/dropzone.js"></script>
     <script src="js/main.js"></script>
+
     <link rel="stylesheet" type="text/css" media="screen" href="css/jquery-ui.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="css/jquery-confirm.min.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="css/dialog.css" />
+    <link rel="stylesheet" href="css/dropzone.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="css/style.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="css/theme.blue.css" />
   </head>
@@ -29,10 +33,13 @@
       <h1>//hundredforty//</h1>
          <div id="input-container">
             <textarea id="note-text" maxlength="140" placeholder="Deine Nachricht | Your message"></textarea><br/>
+            <!-- <div id="upload-widget" class="dropzone"></div> -->
             <div id="sub-input">
                <button id="btn-sendnote">Send</button>
                <span id="textlength">0</span>/140
             </div>
+            <div id="upload-widget" class="dropzone"></div>
+            <!-- <div id="upload-preview" class="dropzone"></div> -->
          </div>
          <div id="loading-send" class="invisible"></div>
          <div id="error-status"></div>
@@ -51,6 +58,7 @@
                <a class="boxclose"></a>
                <div id="_template-date" class="note-date"></div>
                <div id="_template-data" class="note-data dont-break-out"></div>
+               <div id="_template-media"></div>
             </div>
          </div>
          <button id="btn-more">Load more</button>

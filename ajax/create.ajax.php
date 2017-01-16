@@ -60,7 +60,8 @@ $noteObject = new Note( array( 'data'           => $note,
                                'category'       => $cat,
                                'sha256'         => $sha256,
                                'remote_address' => $_SERVER['REMOTE_ADDR'],
-                               'image_refs'     => $image_refs
+                               'image_refs'     => $image_refs,
+                               'referrer'       => $_SERVER['HTTP_REFERER']
 ) );
 $noteObject->save();
 

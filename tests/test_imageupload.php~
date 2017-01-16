@@ -45,19 +45,16 @@
                   success: function(data, textStatus, jqXHR) {
                       if(typeof data.error === 'undefined') {
                           // Success so call function to process the form
-                          console.debug('success: ' + JSON.stringify(data) );
-                          $( '#out' ).empty().html( '<pre>' + JSON.stringify(data) + '</pre>' );
+                          console.debug('success: '+data);
                       } else {
                           // Handle errors here
                           console.log('ERRORS: ' + data.error);
-                          $( '#out' ).empty().html( data.error );
                       }
               },
                   error: function(jqXHR, textStatus, errorThrown)
                   {
                       // Handle errors here
                       console.log('ERRORS: ' + textStatus);
-                      $( '#out' ).empty().html( "Error: " + textStatus );
                       // STOP LOADING SPINNER
                   }
           });

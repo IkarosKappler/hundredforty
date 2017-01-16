@@ -34,6 +34,20 @@ textarea#note-text {
    
 }
 
+div#upload-widget {
+    background-color   : rgba(0,0,0,0);
+    border             : 3px dashed #6b8cb6;
+}
+
+#upload-preview {
+    border             : 1px solid #6b8cb6;
+    background-color   : rgba(0,0,0,0);
+}
+
+.dropzone .dz-preview .dz-image {
+ 
+}
+
 button#btn-sendnote {
   
 }

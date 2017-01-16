@@ -14,12 +14,19 @@ define( 'BLACKLIST_FILE', '../.category_blacklist' );
 $_CATEGORY_BLACKLIST = array(); // array( '%nsfw%' );
 if( file_exists(BLACKLIST_FILE) && is_readable(BLACKLIST_FILE) ) {
     //echo "Reading blacklist " . $_BLACKLIST_FILE . " ...\n";
+    /*
     $file = fopen(BLACKLIST_FILE, "r");
     while( !feof($file) ) {      
         $line_of_text = fgets($file);
-        $_CATEGORY_BLACKLIST = $_CATEGORY_BLACKLIST + explode('\n', $line_of_text);
+        //echo $line_of_text . "\n";
+        $tmp = explode('\n',$line_of_text);
+        //$_CATEGORY_BLACKLIST = $_CATEGORY_BLACKLIST + explode('\n', $line_of_text);
+        foreach( $tmp as $line )
+            $_CATGEORY_BLACKLIST[] = trim($line);
     }
     fclose($file);
+    */
+    $_CATEGORY_BLACKLIST = explode("\n", file_get_contents(BLACKLIST_FILE));
     //print_r( $_CATEGORY_BLACKLIST );
 }
 

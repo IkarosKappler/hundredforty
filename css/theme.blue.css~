@@ -18,11 +18,11 @@ body {
 
 }
 
-#hundretforty h1 {
+#hundredforty h1 {
     
 }
 
-div#hundretforty {
+div#hundredforty {
 
 }
 
@@ -34,9 +34,23 @@ textarea#note-text {
    
 }
 
+div#upload-widget {
+    background-color   : rgba(255,255,255,0);
+    border             : 3px dashed #6b8cb6;
+}
+
+.dropzone .dz-preview .dz-image {
+ 
+}
+
 button#btn-sendnote {
   
 }
+
+button#btn-loadnew {
+
+}
+
 button#btn-more {
    
 }
@@ -45,6 +59,18 @@ button#btn-more {
 #error-status {
     color               : #c5ab8b;
     /* text-shadow         : 4px 4px; */
+}
+
+div#category-list { 
+
+}
+
+div#category-list h4 {
+
+}
+
+div#category-list > ul {
+    
 }
 
 div.note-container {

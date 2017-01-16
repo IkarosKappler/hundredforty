@@ -35,7 +35,9 @@ class Note extends Eloquent
         'data',
         'category',
         'sha256',
-        'remote_address'
+        'remote_address',
+        'image_refs',
+        'referrer'
     ];
 
     /**
@@ -44,7 +46,8 @@ class Note extends Eloquent
      * @var array
      */
     protected $hidden = [
-        
+        'remote_address',
+        'referrer'
     ];
 
 }

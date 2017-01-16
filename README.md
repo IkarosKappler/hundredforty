@@ -1,4 +1,4 @@
-# hundredforty
+# hundretforty
 
 This is a simple note remembererererererer.
 
@@ -14,7 +14,7 @@ Todos:
  * DONE. Category listing.
  * DONE. Category blacklist.
  * Hashtag search.
- * Image uploads.
+ * DONE. Image uploads.
  * URL shortener.
 
 Files
@@ -28,6 +28,10 @@ Files
   DB_HOST=
 
 .
+
+[2017-01-16, Ika, v1.0.5]
+ * Added image uploads.
+ * Added the 'referrer' field to the database.
 
 [2017-01-08, Ika, v1.0.4]
  * Added a category listing hook: ajax/categories.ajax.php.

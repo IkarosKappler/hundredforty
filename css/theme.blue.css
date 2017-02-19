@@ -6,33 +6,21 @@ html, body {
     background: radial-gradient(#6b8cb6, #3a5474);         /* Standard syntax */
 }
 
-html {
-  
-}
+html { }
 
-body { 
- 
-}
+body { }
 
-.hidden {
+.hidden { }
 
-}
+#hundredforty h1 { }
 
-#hundredforty h1 {
-    
-}
+div#hundredforty { }
 
-div#hundredforty {
+#input-container { }
 
-}
+textarea#note-text { }
 
-#input-container {
-   
-}
-
-textarea#note-text {
-   
-}
+img.preview-image { }
 
 div#upload-widget {
     background-color   : rgba(0,0,0,0);
@@ -44,39 +32,28 @@ div#upload-widget {
     background-color   : rgba(0,0,0,0);
 }
 
-.dropzone .dz-preview .dz-image {
- 
-}
+.dropzone .dz-preview .dz-image { }
 
-button#btn-sendnote {
-  
-}
+button#btn-sendnote { }
 
-button#btn-loadnew {
+button#btn-loadnew { }
 
-}
-
-button#btn-more {
-   
-}
+button#btn-more { }
 
 
 #error-status {
     color               : #c5ab8b;
-    /* text-shadow         : 4px 4px; */
 }
 
-div#category-list { 
+.error { }
 
-}
+img.rss-icon { }
 
-div#category-list h4 {
+div#category-list { }
 
-}
+div#category-list h4 { }
 
-div#category-list > ul {
-    
-}
+div#category-list > ul { }
 
 div.note-container {
     border              : 1px solid #44658c;
@@ -101,13 +78,9 @@ a.boxclose{
        
 }
 
-.boxclose:before {
+.boxclose:before { }
 
-}
-
-#hint {
-  
-}
+#hint { }
 
 a.hash-tag {
     color           : #6b8cb6;

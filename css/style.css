@@ -40,6 +40,14 @@ textarea#note-text {
     height      : 80px;
 }
 
+img.preview-image {
+    width                 : 64px;
+    height                : 64px;
+    -moz-border-radius    : 5px;
+    -webkit-border-radius : 5px;
+    border-radius         : 5px;
+}
+
 #upload-widget {
     width       : 200%;
     margin-left : -50%; 
@@ -99,9 +107,14 @@ div#sub-input {
     text-align        : right;
 }
 
-#error-status {
+#error-status, .error {
     color             : #a80000;
 }
+
+img.rss-icon {
+    width             : 32px;
+    height            : 32px;
+}		  
 
 div#category-list { 
     height            : 0px;

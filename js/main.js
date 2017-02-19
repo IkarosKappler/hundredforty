@@ -9,18 +9,17 @@
  * @modified 2017-01-07 Added image-refs upload.
  * @modified 2017-01-08 Added category listings.
  * @modified 2017-01-16 Added image uploads. Added the 'referrer' field to the db.
+ * @modified 2017-02-12 Added a simple RSS feed.
+ * @modified 2017-02-19 Added the RSS icon plus link.
  * @date     2016-12-01
- * @version  1.0.5
+ * @version  1.0.8
  **/
 
 
 _DISPLAY_LIMIT        = 7;
 
 _ALLOW_FILE_UPLOADS   = true;
-
-// Enter your upload script location here.
 _IMAGE_URL_BASE       = 'https://files.func.name';
-
 _UPLOAD_URL           = _IMAGE_URL_BASE + '/ajax/imageupload.ajax.php';
 
 Dropzone.autoDiscover = false;
@@ -92,7 +91,7 @@ $( document ).ready( function() {
 		for( var i = 0; i < uploadInfo.length; i++ ) {
 		    var info = uploadInfo[i];
 		    //console.debug( 'uploadInfo=' + JSON.stringify(uploadInfo[i]) );
-		    image_refs[j] = { uri : info.uri };
+		    image_refs[j] = { image_url_base : _IMAGE_URL_BASE, uri : info.uri };
 		    if( ('dimensions' in info) && ('64x64' in info['dimensions']) )
 			image_refs[j].thumbnail = info['dimensions']['64x64'].uri;
 		    //console.debug('refs '+index+'=' + image_refs[index] );
@@ -100,9 +99,9 @@ $( document ).ready( function() {
 		}
 	    } );
 	    var data = new FormData();				     
-            data.append( 'cat',        CATEGORY );
-	    data.append( 'note',       $inputArea.val() );
-	    data.append( 'image_refs', JSON.stringify(image_refs) );
+            data.append( 'cat',            CATEGORY );
+	    data.append( 'note',           $inputArea.val() );
+	    data.append( 'image_refs',     JSON.stringify(image_refs) );
 	    
             $.ajax(
 		{ url: 'ajax/create.ajax.php',
@@ -238,7 +237,7 @@ $( document ).ready( function() {
 		//console.debug( "Adding image ... ");
 		var thumbnail = fallback( imageRefs[i].thumbnail, imageRefs[i].uri );
 		
-		$container.append( $( '<a/>', { href : _IMAGE_URL_BASE + imageRefs[i].uri, target : '_blank' } ).append( $('<img/>', { width : 64, height : 64, src : _IMAGE_URL_BASE + thumbnail } ) ) );
+		$container.append( $( '<a/>', { href : _IMAGE_URL_BASE + imageRefs[i].uri, target : '_blank' } ).append( $('<img/>', { src : _IMAGE_URL_BASE + thumbnail } ).addClass('preview-image') ) );
 	    }
 	}
     }
@@ -366,22 +365,18 @@ $( document ).ready( function() {
 
 
     var loadCategoryList = function() {
-	//console.debug( "Loading categories ... ");
 	$categoryList.empty();
 	var jqxhr = $.getJSON( 'ajax/categories.ajax.php' )
 	    .done( function( json ) {
-		//processResult(json,appendBefore);
-		//console.debug( "Categories: " + JSON.stringify(json) );
 		for( var index in json.list ) {
 		    var cat = json.list[index];
-		    //console.debug( "category: " + JSON.stringify(cat) );
 		    $categoryList.append( $( '<li/>' ).html( '<a href="?cat=' + cat.name + '">' + (cat.name==''?'<i>none</i>':cat.name) + '</a>' ) );
 		}
 	    } )
 	    .fail( function(jqxhr, textStatus, error) {
 		$categoryList.html( "Error: " + textStatus + " " + error );
 	    } );
-    }
+    };
     
     
     /**
@@ -389,7 +384,10 @@ $( document ).ready( function() {
      **/
     var $textLength = $( 'span#textlength' );
     $inputArea.keyup( function() {
-	$textLength.empty().html( $inputArea.val().length );
+	var textLength = $inputArea.val().length;
+	$textLength.empty().html( textLength );
+	if( textLength > 140 ) $textLength.addClass( 'error' );
+	else                   $textLength.removeClass( 'error' );
     } );
 
 
@@ -467,6 +465,11 @@ $( document ).ready( function() {
      **/
     loadCategoryList();
 
+    /**
+     * Add an RSS icon with link on top of the category list.
+     **/
+    $( '#category-list' ).prepend( $( '<a/>', { href : 'rss/?cat='+CATEGORY, target : '_blank' } ).append( $('<img/>', { src : 'img/icon_rss.svg' }).addClass('rss-icon') ) );
+    
     /**
      * If an ID is passed load the article.
      **/

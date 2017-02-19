@@ -31,14 +31,12 @@
       <div id="hundredforty">
       <h1>//hundredforty//</h1>
          <div id="input-container">
-            <textarea id="note-text" maxlength="140" placeholder="Deine Nachricht | Your message"></textarea><br/>
-            <!-- <div id="upload-widget" class="dropzone"></div> -->
+            <textarea id="note-text" placeholder="Deine Nachricht | Your message"></textarea><br/>
             <div id="sub-input">
                <button id="btn-sendnote">Send</button>
                <span id="textlength">0</span>/140
             </div>
             <div id="upload-widget" class="dropzone"></div>
-            <!-- <div id="upload-preview" class="dropzone"></div> -->
          </div>
          <div id="loading-send" class="invisible"></div>
          <div id="error-status"></div>
@@ -80,6 +78,7 @@
            CSS3<br/>
            Emacs<br/>
            Debian Jessie<br/>
+           FontAwesome (Icons)<br/>
 
           <div id="delete-dialog">
 

@@ -11,15 +11,16 @@ Todos:
  * Write docs for the get-script.
  * Write docs for the main.js file.
  * Bug: If note is deleted then loading more fails about one record.
- * DONE. Category listing.
- * DONE. Category blacklist.
  * Hashtag search.
- * DONE. Image uploads.
  * URL shortener.
  * Handle generic file uploads that do not return thumbnails.
 
 Files
 -----
+ .env
+ This file contains a basic configuration.
+ 
+
  ./database/.env
  This file should contain your DB credentials
 ```text
@@ -32,28 +33,6 @@ Files
 
 Include the script
 ------------------
-...
-
-Create the MySQL/Maria database
--------------------------
-```sql
-CREATE TABLE IF NOT EXISTS `notes` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `data` varchar(140) COLLATE utf8_unicode_ci NOT NULL,
-  `category` varchar(256) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT 'A category.',
-  `sha256` varchar(64) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT 'A hash.',
-  `remote_address` varchar(40) CHARACTER SET utf32 COLLATE utf32_unicode_ci NOT NULL DEFAULT '',
-  `referrer` varchar(256) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT 'The HTTP referrer website.',
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  `image_refs` varchar(4096) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `deleted_at` (`deleted_at`),
-  KEY `category` (`category`(255),`sha256`),
-  KEY `referrer` (`referrer`(255))
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=243 ;
-```
 
 
 HTML
@@ -93,6 +72,17 @@ HTML
          <div id="loading-more" class="invisible"></div>
    </div>
 ```
+
+Changelog
+=========
+[2016-02-19, Ika, v1.0.8]
+ * Added the RSS icon plus link to the current feed.
+
+[2017-02-12, Ika, v1.0.7]
+ * Added a simple RSS feed in ./rss/
+
+[2017-01-23, Ika, v1.0.6]
+ * Now storing the image-url-base in the database, too.
 
 [2017-01-16, Ika, v1.0.5]
  * Added image uploads.

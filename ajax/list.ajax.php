@@ -28,9 +28,6 @@ if( array_key_exists('limit',$_GET) ) {
 
 $cat = (array_key_exists('cat',$_GET) ? $_GET['cat'] : '');
 
-    
-//$results = DB::select('select * from notes;', array(1));
-
 $list = Note::
       select(DB::raw('*,UNIX_TIMESTAMP(created_at) AS created_at_ts'))
     ->whereNull('deleted_at')
@@ -41,7 +38,6 @@ $list = Note::
     ->get()
     ->toArray();
 
-//print_r( $list );
 $result = array( 'meta' => array( 'skip' => $skip, 'limit' => $limit ),
                  'list' => $list );
 echo json_encode( $result, JSON_PRETTY_PRINT );

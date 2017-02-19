@@ -11,23 +11,9 @@ header( "Content-Type: text/json; charset=utf-8" );
 
 define( 'BLACKLIST_FILE', '../.category_blacklist' );
 
-$_CATEGORY_BLACKLIST = array(); // array( '%nsfw%' );
+$_CATEGORY_BLACKLIST = array(); 
 if( file_exists(BLACKLIST_FILE) && is_readable(BLACKLIST_FILE) ) {
-    //echo "Reading blacklist " . $_BLACKLIST_FILE . " ...\n";
-    /*
-    $file = fopen(BLACKLIST_FILE, "r");
-    while( !feof($file) ) {      
-        $line_of_text = fgets($file);
-        //echo $line_of_text . "\n";
-        $tmp = explode('\n',$line_of_text);
-        //$_CATEGORY_BLACKLIST = $_CATEGORY_BLACKLIST + explode('\n', $line_of_text);
-        foreach( $tmp as $line )
-            $_CATGEORY_BLACKLIST[] = trim($line);
-    }
-    fclose($file);
-    */
     $_CATEGORY_BLACKLIST = explode("\n", file_get_contents(BLACKLIST_FILE));
-    //print_r( $_CATEGORY_BLACKLIST );
 }
 
 require_once( "../database/bootstrap/autoload.php" );
@@ -40,7 +26,6 @@ foreach( $_CATEGORY_BLACKLIST as $exclude ) {
     $exclude = trim($exclude);
     if( strlen($exclude) == 0 )
         continue;
-    //echo "ignoring: " . $exclude . "\n";
     $list = $list->where('category','NOT LIKE',$exclude);
 }
 $list = $list

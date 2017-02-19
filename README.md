@@ -33,6 +33,15 @@ Files
    LINK_BASE=http://yourdomain.com/sub/directory/
  ```
 
+ config.js (edit to your needs)
+ ```javascript
+    _DISPLAY_LIMIT        = 7;
+
+    _ALLOW_FILE_UPLOADS   = true;
+    _IMAGE_URL_BASE       = 'https://yourserver.com';
+    _UPLOAD_URL           = _IMAGE_URL_BASE + '/ajax/imageupload.ajax.php';
+  ```
+ 
  ./database/.env
  This file should contain your DB credentials
 ```text

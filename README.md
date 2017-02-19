@@ -19,9 +19,19 @@ Todos:
 
 Files
 -----
+ .category_blacklist
+ This file contains a category blacklist. Each line specifies a
+ wildcard for category names that shall not be listet in the interface.
+ ```text
+   %secret-category%
+   %do-not-show%
+ ```
+
  .env
  This file contains a basic configuration.
- 
+ ```text
+   LINK_BASE=http://yourdomain.com/sub/directory/
+ ```
 
  ./database/.env
  This file should contain your DB credentials

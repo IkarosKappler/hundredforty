@@ -28,8 +28,8 @@ textToLinks: function(text) {
               html = html.replace(/&/g, '&amp;')
                          .replace(/</g, '&lt;')
                          .replace(/>/g, '&gt;')
-                         .replace(url1, '&amp;nbsp;$1<a href="http://$2" target="_blank">$2</a>$3')
-                         .replace(url2, '&amp;nbsp;$1<a href="$2" target="_blank">$2</a>$5');
+                         .replace(url1, '$1\n<a href="http://$2" target="_blank">$2</a>$3')
+                         .replace(url2, '$1\n<a href="$2" target="_blank">$2</a>$5');
               $(n).after(html).remove();
             }
           }

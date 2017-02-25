@@ -18,6 +18,7 @@
     <script src="js/dropzone.js"></script>
     <script src="config.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/hundredforty.urlshortener.js"></script>
 
     <link rel="stylesheet" type="text/css" media="screen" href="css/jquery-ui.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="css/jquery-confirm.min.css" />

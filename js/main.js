@@ -11,16 +11,27 @@
  * @modified 2017-01-16 Added image uploads. Added the 'referrer' field to the db.
  * @modified 2017-02-12 Added a simple RSS feed.
  * @modified 2017-02-19 Added the RSS icon plus link.
+ * @modified 2017-02-25 Added URL shortener hook.
+ *
+ * @require jQuery
+ * @optional URLShortener
+ *
  * @date     2016-12-01
  * @version  1.0.8
  **/
 
 
-_DISPLAY_LIMIT        = 7;
+_DISPLAY_LIMIT        = 10;
 
 _ALLOW_FILE_UPLOADS   = true;
 _IMAGE_URL_BASE       = 'https://files.func.name';
 _UPLOAD_URL           = _IMAGE_URL_BASE + '/ajax/imageupload.ajax.php';
+
+// This requires the URLShortener.
+_SHORTEN_URLS         = true;
+// If you want to use any other URL shortener here, use the code you need.
+_URL_SHORTENER        = function(text,onComplete,onFail) { new URLShortener().shortenText(text,onComplete,onFail); };
+
 
 Dropzone.autoDiscover = false;
 
@@ -78,58 +89,70 @@ $( document ).ready( function() {
 	    return;
 	}
 	clearErrorStatus();
-	$loadingSend.removeClass('invisible');
-	$_btn = $(this);
-	$_btn.prop( 'disabled', 'disabled' );
-	window.setTimeout( function() {
-	    // --- BEGIN --------------------------------------
-	    var image_refs = [];
-	    //var urlBase    = 'https://files.func.name';
-	    var j          = 0;
-	    $('.upload-info').each( function(index) {
-		var uploadInfo = $(this).data('upload-info'); // Array
-		for( var i = 0; i < uploadInfo.length; i++ ) {
-		    var info = uploadInfo[i];
-		    //console.debug( 'uploadInfo=' + JSON.stringify(uploadInfo[i]) );
-		    image_refs[j] = { image_url_base : _IMAGE_URL_BASE, uri : info.uri };
-		    if( ('dimensions' in info) && ('64x64' in info['dimensions']) )
-			image_refs[j].thumbnail = info['dimensions']['64x64'].uri;
-		    //console.debug('refs '+index+'=' + image_refs[index] );
-		    j++;
-		}
-	    } );
-	    var data = new FormData();				     
-            data.append( 'cat',            CATEGORY );
-	    data.append( 'note',           $inputArea.val() );
-	    data.append( 'image_refs',     JSON.stringify(image_refs) );
-	    
-            $.ajax(
-		{ url: 'ajax/create.ajax.php',
-                  type: 'POST',
-                  data: data,
-                  cache: false,
-                  dataType: 'json',
-                  processData: false, // Don't process the files?
-                  contentType: false, // Set content type to false as jQuery will tell the server its a query string request
-                  success: function(json, textStatus, jqXHR) {
-		      // Note was posted. Add new note element to DOM and clear input area.
-		      $note = createNoteNode( json.note );		    
-		      $note.insertAfter( $template ); 
-		      $inputArea.val('');
-		      $textLength.empty().html( '0' );
-		      $hundredforty.find('.upload-info').remove();
-		      dropZone.removeAllFiles();
-		      $uploadPreview.css( 'display', 'none' );
-		  },
-                  error: function( jqXHR, textStatus, error ) {
-		      setErrorStatus( error + ": " + textStatus + " " + jqXHR.responseJSON.message );
-                  }
-		}).always( function() {
-		    $_btn.prop( 'disabled', false );
-		    $loadingSend.addClass('invisible');
+	var sendCreateNoteRequest = function(text) {
+	    $loadingSend.removeClass('invisible');
+	    $_btn = $(this);
+	    $_btn.prop( 'disabled', 'disabled' );
+	    window.setTimeout( function() {
+		// --- BEGIN --------------------------------------
+		var image_refs = [];
+		//var urlBase    = 'https://files.func.name';
+		var j          = 0;
+		$('.upload-info').each( function(index) {
+		    var uploadInfo = $(this).data('upload-info'); // Array
+		    for( var i = 0; i < uploadInfo.length; i++ ) {
+			var info = uploadInfo[i];
+			//console.debug( 'uploadInfo=' + JSON.stringify(uploadInfo[i]) );
+			image_refs[j] = { image_url_base : _IMAGE_URL_BASE, uri : info.uri };
+			if( ('dimensions' in info) && ('64x64' in info['dimensions']) )
+			    image_refs[j].thumbnail = info['dimensions']['64x64'].uri;
+			//console.debug('refs '+index+'=' + image_refs[index] );
+			j++;
+		    }
 		} );
-	    // --- END ----------------------------------------
-	}, 1000 );
+		var data = new FormData();				     
+		data.append( 'cat',            CATEGORY );
+		data.append( 'note',           text );
+		data.append( 'image_refs',     JSON.stringify(image_refs) );
+		
+		$.ajax(
+		    { url: 'ajax/create.ajax.php',
+                      type: 'POST',
+                      data: data,
+                      cache: false,
+                      dataType: 'json',
+                      processData: false, // Don't process the files?
+                      contentType: false, // Set content type to false as jQuery will tell the server its a query string request
+                      success: function(json, textStatus, jqXHR) {
+			  // Note was posted. Add new note element to DOM and clear input area.
+			  $note = createNoteNode( json.note );		    
+			  $note.insertAfter( $template ); 
+			  $inputArea.val('');
+			  $textLength.empty().html( '0' );
+			  $hundredforty.find('.upload-info').remove();
+			  dropZone.removeAllFiles();
+			  $uploadPreview.css( 'display', 'none' );
+		      },
+                      error: function( jqXHR, textStatus, error ) {
+			  setErrorStatus( error + ": " + textStatus + " " + jqXHR.responseJSON.message );
+                      }
+		    }).always( function() {
+			$_btn.prop( 'disabled', false );
+			$loadingSend.addClass('invisible');
+		    } );
+		// --- END ----------------------------------------
+	    }, 1000 );
+	}; // END function sendCreateNoteRequest
+
+	// Shorten URLs or send pure text to storage script?
+	if( _SHORTEN_URLS ) {
+	    _URL_SHORTENER( $inputArea.val(),
+			    function( result ) { sendCreateNoteRequest(result); },
+			    function( error ) { setErrorStatus( 'Failed to shorten URLs: ' + JSON.stringify(error) ); }
+			  );
+	} else {
+	    sendCreateNoteRequest( $inputArea.val() );
+	}
     } );
     
 
@@ -216,7 +239,8 @@ $( document ).ready( function() {
 				      target : '_blank'
 				    } ).addClass('inner-link').addClass('clickable').html( $linkImage ); // '&#x1f517;' );    
 	$note.find( '#_template-date' ).attr('id','template-date-'+noteData.id).empty().html( $showLink ).append( ' '+noteData.created_at );
-	$note.find('a.boxclose').click( function() { requestDelete(noteData); } ); 
+	$note.find('a.boxclose').click( function() { requestDelete(noteData); } );
+	console.debug(noteData.data);
 	$note.find( '#_template-data' ).attr('id',newID).empty().html( formatText(noteData.data) ).linkify().hashtagify();
 	$mediaContainer = $note.find( '#_template-media' ).attr('id','template-media-'+noteData.id);
 	appendImagesToNoteNode( $mediaContainer, noteData );

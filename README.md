@@ -96,7 +96,14 @@ HTML
 
 Changelog
 =========
-[2016-02-19, Ika, v1.0.8]
+[2017-02-25, Ika, v1.0.9]
+ * Added a simple URL shortener. See _SHORTEN_URLS and
+   _URL_SHORTENER in the js/main.js file (near line 31).
+ * Fixed the 'no whitespace before links'-linkify issue by
+   adding '&amp;nbsp;' to the lines 31 and 32 of
+   jquery-linkify.js.
+
+[2017-02-19, Ika, v1.0.8]
  * Added the RSS icon plus link to the current feed.
 
 [2017-02-12, Ika, v1.0.7]

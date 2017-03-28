@@ -6,6 +6,9 @@ html, body {
     font-size   : 10pt;
     padding     : 16px;
 }
+input {
+    font-family : Monospace;
+}
 
 html {
     display     : table;
@@ -33,6 +36,15 @@ div#hundredforty {
 #input-container {
     width       : 100%;
     text-align  : center;
+}
+
+div#author-container {
+    width       : 100%;
+    text-align  : left;
+}
+
+input#author {
+    width       : 50%;
 }
 
 textarea#note-text {
@@ -140,6 +152,10 @@ div.note-container {
     border-radius     : 4px;
     box-sizing        : border-box;
     padding           : 6px;
+}
+
+div.note-author {
+    display       : inline-block;
 }
 
 div.note-date {

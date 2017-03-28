@@ -16,14 +16,27 @@ body { }
 
 div#hundredforty { }
 
-#input-container { }
+#input-container {
+    background-color   : white;
+}
 
-textarea#note-text { }
+div#author-container { }
+
+input#author {
+    background         : none;
+    width              : 100%;
+    border             : 0;
+}
+
+textarea#note-text {
+    background         : none;
+    border             : 0;
+}
 
 img.preview-image { }
 
 div#upload-widget {
-    background-color   : rgba(0,0,0,0);
+    background-color   : rgba( 171, 204, 246, 0.8); /* #abccf6; */
     border             : 3px dashed #6b8cb6;
 }
 
@@ -62,6 +75,10 @@ div.note-container {
     border-radius       : 4px;
     background-color    : white;
 
+}
+
+div.note-author {
+    
 }
 
 div.note-date {

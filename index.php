@@ -17,8 +17,8 @@
     <script src="js/function.getURIParams.js"></script>
     <script src="js/dropzone.js"></script>
     <script src="config.js"></script>
-    <script src="js/main.js"></script>
     <script src="js/hundredforty.urlshortener.js"></script>
+    <script src="js/main.js"></script>
 
     <link rel="stylesheet" type="text/css" media="screen" href="css/jquery-ui.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="css/jquery-confirm.min.css" />
@@ -33,6 +33,7 @@
       <div id="hundredforty">
       <h1>//hundredforty//</h1>
          <div id="input-container">
+            <div id="author-container"><input type="text" id="author" placeholder="Nickname" maxlen="16" /></div>
             <textarea id="note-text" placeholder="Deine Nachricht | Your message"></textarea><br/>
             <div id="sub-input">
                <button id="btn-sendnote">Send</button>
@@ -55,6 +56,7 @@
          <div id="notes">
             <div id="_template-note" class="note-container hidden">
                <a class="boxclose"></a>
+               <div id="_template-author" class="note-author"></div>
                <div id="_template-date" class="note-date"></div>
                <div id="_template-data" class="note-data dont-break-out"></div>
                <div id="_template-media"></div>

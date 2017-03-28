@@ -25,6 +25,7 @@ if( !array_key_exists('note',$_POST) ) {
 $note       = $_POST['note'];
 $cat        = (array_key_exists('cat',$_POST)?$_POST['cat']:'');
 $image_refs = (array_key_exists('image_refs',$_POST) ? $_POST['image_refs'] : '{}' );
+$author     = (array_key_exists('author',$_POST) ? $_POST['author']:'');
 
 if( strlen($note) > 140 ) {
     header( 'HTTP/1.1 400 Bad Request' );
@@ -61,7 +62,8 @@ $noteObject = new Note( array( 'data'           => $note,
                                'sha256'         => $sha256,
                                'remote_address' => $_SERVER['REMOTE_ADDR'],
                                'image_refs'     => $image_refs,
-                               'referrer'       => $_SERVER['HTTP_REFERER']
+                               'referrer'       => $_SERVER['HTTP_REFERER'],
+                               'author'         => $author
 ) );
 $noteObject->save();
 

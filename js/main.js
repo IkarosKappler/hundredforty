@@ -17,7 +17,8 @@
  * @optional URLShortener
  *
  * @date     2016-12-01
- * @version  1.0.8
+ * @modified 2017-03-25 (Added author).
+ * @version  1.1.0
  **/
 
 
@@ -30,7 +31,9 @@ _UPLOAD_URL           = _IMAGE_URL_BASE + '/ajax/imageupload.ajax.php';
 // This requires the URLShortener.
 _SHORTEN_URLS         = true;
 // If you want to use any other URL shortener here, use the code you need.
-_URL_SHORTENER        = function(text,onComplete,onFail) { new URLShortener().shortenText(text,onComplete,onFail); };
+_URL_SHORTENER        = new URLShortener().shortenText;
+
+_MAX_TEXT_LENGTH      = 140;
 
 
 Dropzone.autoDiscover = false;
@@ -57,6 +60,7 @@ $( document ).ready( function() {
     var $btnLoadNew    = $( '#btn-loadnew' );                     // The button for loading new notes.
     var $btnMore       = $( '#btn-more' );                        // The button for loading more notes.
     var $inputArea     = $hundredforty.find( '#note-text' );      // The text input area (max 140 chars).
+    var $authorInput   = $hundredforty.find( 'input#author' );
     var $categoryList  = $hundredforty.find( '#category-list ul' );
     var $_loading      = $( '<img/>', { src : 'img/loading3.svg', width : 32, height : 32 } ); // A loading animation.
 
@@ -89,24 +93,21 @@ $( document ).ready( function() {
 	    return;
 	}
 	clearErrorStatus();
-	var sendCreateNoteRequest = function(text) {
+	var sendCreateNoteRequest = function(text,author) {
 	    $loadingSend.removeClass('invisible');
 	    $_btn = $(this);
 	    $_btn.prop( 'disabled', 'disabled' );
 	    window.setTimeout( function() {
 		// --- BEGIN --------------------------------------
 		var image_refs = [];
-		//var urlBase    = 'https://files.func.name';
 		var j          = 0;
 		$('.upload-info').each( function(index) {
 		    var uploadInfo = $(this).data('upload-info'); // Array
 		    for( var i = 0; i < uploadInfo.length; i++ ) {
 			var info = uploadInfo[i];
-			//console.debug( 'uploadInfo=' + JSON.stringify(uploadInfo[i]) );
 			image_refs[j] = { image_url_base : _IMAGE_URL_BASE, uri : info.uri };
 			if( ('dimensions' in info) && ('64x64' in info['dimensions']) )
 			    image_refs[j].thumbnail = info['dimensions']['64x64'].uri;
-			//console.debug('refs '+index+'=' + image_refs[index] );
 			j++;
 		    }
 		} );
@@ -114,6 +115,7 @@ $( document ).ready( function() {
 		data.append( 'cat',            CATEGORY );
 		data.append( 'note',           text );
 		data.append( 'image_refs',     JSON.stringify(image_refs) );
+		data.append( 'author',         author );
 		
 		$.ajax(
 		    { url: 'ajax/create.ajax.php',
@@ -126,7 +128,8 @@ $( document ).ready( function() {
                       success: function(json, textStatus, jqXHR) {
 			  // Note was posted. Add new note element to DOM and clear input area.
 			  $note = createNoteNode( json.note );		    
-			  $note.insertAfter( $template ); 
+			  $note.insertAfter( $template );
+			  $authorInput.val('');
 			  $inputArea.val('');
 			  $textLength.empty().html( '0' );
 			  $hundredforty.find('.upload-info').remove();
@@ -145,13 +148,15 @@ $( document ).ready( function() {
 	}; // END function sendCreateNoteRequest
 
 	// Shorten URLs or send pure text to storage script?
-	if( _SHORTEN_URLS ) {
-	    _URL_SHORTENER( $inputArea.val(),
-			    function( result ) { sendCreateNoteRequest(result); },
+	var input  = $inputArea.val();
+	var author = $authorInput.val();
+	if( _SHORTEN_URLS && input.length > _MAX_TEXT_LENGTH ) {
+	    _URL_SHORTENER( input,
+			    function( result ) { sendCreateNoteRequest(result,author); },
 			    function( error ) { setErrorStatus( 'Failed to shorten URLs: ' + JSON.stringify(error) ); }
 			  );
 	} else {
-	    sendCreateNoteRequest( $inputArea.val() );
+	    sendCreateNoteRequest( input, author );
 	}
     } );
     
@@ -237,7 +242,8 @@ $( document ).ready( function() {
 	var $showLink  = $( '<a/>', { href   : '?cat=' + encodeURIComponent(CATEGORY) + '&id=' + encodeURIComponent(noteData.id) + '&key=' + encodeURIComponent(noteData.sha256),
 				      name   : 'note_'+noteData.id,
 				      target : '_blank'
-				    } ).addClass('inner-link').addClass('clickable').html( $linkImage ); // '&#x1f517;' );    
+				    } ).addClass('inner-link').addClass('clickable').html( $linkImage );
+	$note.find( '#_template-author' ).attr('id','template-author-'+noteData.id).empty().html( noteData.author );
 	$note.find( '#_template-date' ).attr('id','template-date-'+noteData.id).empty().html( $showLink ).append( ' '+noteData.created_at );
 	$note.find('a.boxclose').click( function() { requestDelete(noteData); } );
 	console.debug(noteData.data);

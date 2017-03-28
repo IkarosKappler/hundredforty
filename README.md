@@ -62,6 +62,7 @@ HTML
     <div id="hundredforty">
       <h1>//hundredforty//</h1>
          <div id="input-container">
+	    <div id="author-container"><input type="text" id="author" placeholder="Nickname" maxlen="16" /></div>
             <textarea id="note-text" maxlength="140" placeholder="Deine Nachricht | Your message"></textarea><br/>
             <div id="sub-input">
                <button id="btn-sendnote">Send</button>
@@ -84,6 +85,7 @@ HTML
          <div id="notes">
             <div id="_template-note" class="note-container hidden">
                <a class="boxclose"></a>
+	       <div id="_template-author" class="note-author"></div>
                <div id="_template-date" class="note-date"></div>
                <div id="_template-data" class="note-data dont-break-out"></div>
                <div id="_template-media"></div>
@@ -100,7 +102,7 @@ Changelog
  * Added a simple URL shortener. See _SHORTEN_URLS and
    _URL_SHORTENER in the js/main.js file (near line 31).
  * Fixed the 'no whitespace before links'-linkify issue by
-   adding '&amp;nbsp;' to the lines 31 and 32 of
+   adding '\n' to the lines 31 and 32 of
    jquery-linkify.js.
 
 [2017-02-19, Ika, v1.0.8]

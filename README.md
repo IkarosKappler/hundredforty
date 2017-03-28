@@ -98,6 +98,10 @@ HTML
 
 Changelog
 =========
+[2017-03-28, Ika, v1.1.0]
+ * Added an 'author' field [string(64)].
+ * Optimized the blue theme.
+
 [2017-02-25, Ika, v1.0.9]
  * Added a simple URL shortener. See _SHORTEN_URLS and
    _URL_SHORTENER in the js/main.js file (near line 31).

@@ -98,6 +98,11 @@ HTML
 
 Changelog
 =========
+[2017-04-12, Ika, v1.1.1]
+ * The uploaded does not support non-image files, too.
+   (using the Free-file-icons theme 
+     https://github.com/teambox/Free-file-icons).
+
 [2017-03-28, Ika, v1.1.0]
  * Added an 'author' field [string(64)].
  * Optimized the blue theme.

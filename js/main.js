@@ -12,19 +12,23 @@
  * @modified 2017-02-12 Added a simple RSS feed.
  * @modified 2017-02-19 Added the RSS icon plus link.
  * @modified 2017-02-25 Added URL shortener hook.
+ * @modified 2017-04-12 Added non-image file uploads.
  *
  * @require jQuery
  * @optional URLShortener
  *
  * @date     2016-12-01
  * @modified 2017-03-25 (Added author).
- * @version  1.1.0
+ * @version  1.1.1
  **/
 
 
 _DISPLAY_LIMIT        = 10;
 
 _ALLOW_FILE_UPLOADS   = true;
+// Emptpy images only: 'image/*'
+// All files         : ''
+_ALLOWED_FILE_TYPES   = '';
 _IMAGE_URL_BASE       = 'https://files.func.name';
 _UPLOAD_URL           = _IMAGE_URL_BASE + '/ajax/imageupload.ajax.php';
 
@@ -48,7 +52,7 @@ $( document ).ready( function() {
     // category ''.
     var URI_PARAMS     = getURIParams();
     var CATEGORY       = ('cat' in URI_PARAMS) ? URI_PARAMS['cat'].toLowerCase() : '';
-    var ID             = ('id' in URI_PARAMS) ? URI_PARAMS['id'] : '';
+    var ID             = ('id'  in URI_PARAMS) ? URI_PARAMS['id'] : '';
     var KEY            = ('key' in URI_PARAMS) ? URI_PARAMS['key'] : '';
 
     // Fetch frequently asked questions ... ehm ... fetch frequently used DOM objects.
@@ -108,6 +112,8 @@ $( document ).ready( function() {
 			image_refs[j] = { image_url_base : _IMAGE_URL_BASE, uri : info.uri };
 			if( ('dimensions' in info) && ('64x64' in info['dimensions']) )
 			    image_refs[j].thumbnail = info['dimensions']['64x64'].uri;
+			else if( 'icon_uri' in info )
+			    image_refs[j].thumbnail = info['icon_uri'];
 			j++;
 		    }
 		} );
@@ -427,13 +433,11 @@ $( document ).ready( function() {
      **/
     if( _ALLOW_FILE_UPLOADS ) {
 	try {
-	    //Dropzone.autoDiscover = false;
 	    var formData = new FormData();
-	    //formData.append( file ); ???
 	    dropZone = new Dropzone('#upload-widget', {
-		url                : _UPLOAD_URL, // 'https://files.func.name/ajax/imageupload.ajax.php',
+		url                : _UPLOAD_URL, // This is configured in line 29
 		method             : 'post',
-		// withCredentials    : true,   // DO NOT SET FOR CORS!
+		// withCredentials    : true,     // DO NOT SET FOR CORS!
 		paramName          : 'file',
 		maxFilesize        : 2, // MB
 		addRemoveLinks     : true,
@@ -450,13 +454,12 @@ $( document ).ready( function() {
 		    'Cache-Control'                : null,
 		    'X-Requested-With'             : null
 		},
-		acceptedFiles      : 'image/*',
+		acceptedFiles      : _ALLOWED_FILE_TYPES,  // 'image/*',
 		init: function() {
 		    this.on("addedfile", function(file) {
 			$uploadPreview.css( 'display', 'inherit' );
 		    });
-		    this.on('success', function( file, response ) {			
-			//console.debug('success. file=' + file + ', response=' + response );
+		    this.on('success', function( file, response ) {
 			// Store result in the preview widget.
 			// Must be an object
 			//  {   uri : ...,
@@ -471,8 +474,8 @@ $( document ).ready( function() {
 			console.error( "Error response: " + response );
 			setErrorStatus( 'Failed to upload file: ' + response );
 		    } );
-		    this.on('sending',function(file,xhr,data){
-			//console.debug( 'Sending ... data: ' + data );
+		    this.on('sending',function(file,xhr,data) {
+			// NOOP
 		    });
 		}
 	    }  );

@@ -144,6 +144,26 @@ div#category-list > ul {
     padding-left      : 0px;
 }
 
+div#search-container { 
+    height            : auto;
+    width             : auto;
+    overflow          : visible;
+    margin-left       : 110%;
+}
+
+div#search-container input#search-term { }
+
+div#search-container div#search-results {
+    width             : 200px;
+    /* height            : 640px; */
+    overflow          : hidden;
+    /* transform         : scale(0.75); */
+}
+
+div#search-container div#search-results div.note-container {
+    background-color  : rgba(255,255,255,0.8);
+}
+
 div.note-container {
     width             : 100%;
     border            : 1px solid black;

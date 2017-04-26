@@ -19,7 +19,8 @@
  *
  * @date     2016-12-01
  * @modified 2017-03-25 (Added author).
- * @version  1.1.1
+ * @modified 2017-04-26 (Added the search bar).
+ * @version  1.1.2
  **/
 
 
@@ -59,6 +60,7 @@ $( document ).ready( function() {
     var $hundredforty  = $( '#hundredforty' );                    // The main container.
     var $container     = $hundredforty.find( '#notes' );          // The sub container for all notes.
     var $template      = $container.find( '#_template-note' );    // The note template.
+    var $resultTemplate = $hundredforty.find( '#_template-result' ); // The note template.
     var $uploadWidget  = $( '#upload-widget' );                   // A dropzone for file uploads.
     var $uploadPreview = $( '#upload-preview' );                  // An area for previewing uploaded images.
     var $btnLoadNew    = $( '#btn-loadnew' );                     // The button for loading new notes.
@@ -67,6 +69,8 @@ $( document ).ready( function() {
     var $authorInput   = $hundredforty.find( 'input#author' );
     var $categoryList  = $hundredforty.find( '#category-list ul' );
     var $_loading      = $( '<img/>', { src : 'img/loading3.svg', width : 32, height : 32 } ); // A loading animation.
+
+    console.debug( 'result template = ' + $resultTemplate.attr('id') );
 
     var dropZone       = null;
 
@@ -238,26 +242,37 @@ $( document ).ready( function() {
     
     
     var createNoteNode = function( noteData ) {
-	var $container = $hundredforty.find( '#notes' );
+	return createNodeFromTemplate( noteData, $template, 'note_' );
+    }
+
+    var createResultNode = function( noteData ) {
+	console.log( 'Creating result node from result template ... ' + $resultTemplate.attr('id') );
+	return createNodeFromTemplate( noteData, $resultTemplate, 'result_' );
+    }
+
+    var createNodeFromTemplate = function( noteData, $templ, baseID ) {
+	//var $container = $hundredforty.find( '#notes' );
 
 	var $linkImage = $( '<img/>', { src : 'img/link_symbol.svg', width : 16, height : 16 } ).css( { width : '16px', height : '16px' } );
 	
-	var newID      = 'template-data-'+noteData.id; 
-	var $note      = $template.clone().removeClass('hidden').attr('id','note_'+noteData.id);
+	// var newID      = 'template-data-'+noteData.id; 
+	var $note      = $templ.clone().removeClass('hidden').attr('id',baseID+noteData.id);
 	$note.data('created_at_ts',noteData['created_at_ts']);
 	var $showLink  = $( '<a/>', { href   : '?cat=' + encodeURIComponent(CATEGORY) + '&id=' + encodeURIComponent(noteData.id) + '&key=' + encodeURIComponent(noteData.sha256),
 				      name   : 'note_'+noteData.id,
 				      target : '_blank'
 				    } ).addClass('inner-link').addClass('clickable').html( $linkImage );
-	$note.find( '#_template-author' ).attr('id','template-author-'+noteData.id).empty().html( noteData.author );
-	$note.find( '#_template-date' ).attr('id','template-date-'+noteData.id).empty().html( $showLink ).append( ' '+noteData.created_at );
+	$note.find( '#_template-author' ).attr('id',baseID+'template-author-'+noteData.id).empty().html( noteData.author );
+	$note.find( '#_template-date' ).attr('id',baseID+'template-date-'+noteData.id).empty().html( $showLink ).append( ' '+noteData.created_at );
 	$note.find('a.boxclose').click( function() { requestDelete(noteData); } );
-	console.debug(noteData.data);
-	$note.find( '#_template-data' ).attr('id',newID).empty().html( formatText(noteData.data) ).linkify().hashtagify();
-	$mediaContainer = $note.find( '#_template-media' ).attr('id','template-media-'+noteData.id);
+	//console.debug(noteData.data);
+	$note.find( '#_template-data' ).attr('id',baseID+'data-'+noteData.id).empty().html( formatText(noteData.data) ).linkify().hashtagify();
+	$mediaContainer = $note.find( '#_template-media' ).attr('id',baseID+'template-media-'+noteData.id);
 	appendImagesToNoteNode( $mediaContainer, noteData );
 	return $note;
     };
+
+    
 
 
     var appendImagesToNoteNode = function( $container, noteData ) {
@@ -281,9 +296,7 @@ $( document ).ready( function() {
     
     var processResult = function( data, appendBefore ) {
 	clearErrorStatus();
-	//console.debug( data );
 	data.list.forEach( function(noteData) {
-	    //console.debug( JSON.stringify(noteData) );
 	    var $note = createNoteNode( noteData );
 	    // Attach to DOM.
 	    if( appendBefore )
@@ -314,16 +327,12 @@ $( document ).ready( function() {
 	if( numNew == 0 )
 	    return;
 	// Don't forget to skip 'n' less new notes when loading older ones now.
-	//$btnMore.data( 'skip', $btnMore.data('skip') + numNew );
-	//console.debug( 'Loading ' + numNew + ' new records ...' );
 	// Load the next new [n] notes.
 	$btnLoadNew.css( 'visibility', 'hidden' );
 	loadNotes( 0, numNew, true );  // true -> append before	
     } );
     
     $btnMore.click( function() {
-	//console.debug( "btn.data.skip=" + $btnMore.data('skip') + ", btn.data.limit=" + $btnMore.data('limit') );
-	//$loadingMore.removeClass('invisible');
 	$btnMore.prop( 'disabled', 'disabled' );
 	loadNotes( $btnMore.data('skip'), $btnMore.data('limit'), false );  // false -> don't append before (append after)
     } );
@@ -334,8 +343,7 @@ $( document ).ready( function() {
      * a JSON obejct with n more tweets .... ehhm notes.
      **/
     var loadNotes = function( skip, limit, appendBefore ) {
-	$loadingMore.removeClass('invisible');	
-	//$btnMore.prop( 'disabled', 'disabled' );
+	$loadingMore.removeClass('invisible');
 	window.setTimeout( function() {
 	    var jqxhr = $.getJSON( 'ajax/list.ajax.php?cat=' + encodeURIComponent(CATEGORY) + '&skip=' + skip + '&limit=' + limit )
 		.done( function( json ) {
@@ -365,19 +373,16 @@ $( document ).ready( function() {
 	    height      : 300,
 	    modal       : true  // Not working?
 	} ).append( $node );
-	//$( '#dialog' ).dialog('open');
     }
 
 
     
     var checkForNewNotes = function() {
-	//console.log( 'Checking for new notes ...' );
 	clearErrorStatus();
-	// The first note container is th _template container, which is OK!
-	var $secondNoteContainer = $( '.note-container:nth-child(2)');
-	//console.debug( $secondNoteContainer.length );
+	// The first note container is the _template container, which is OK.
+	var $secondNoteContainer = $( 'div#notes .note-container:nth-child(2)');
 	var since = -1;
-	if( $secondNoteContainer.length ) since = $secondNoteContainer.data('created_at_ts'); // '2016-12-01';
+	if( $secondNoteContainer.length ) since = $secondNoteContainer.data('created_at_ts'); // 'YYYY-MM-DD';
 	else                              since = $template.data('created_at_ts');
 	var jqxhr = $.getJSON( 'ajax/checknew.ajax.php?cat=' + encodeURIComponent(CATEGORY) + '&since=' + since )
 		.done( function( json ) {
@@ -427,6 +432,39 @@ $( document ).ready( function() {
     } );
 
 
+    var $searchContainer       = $( 'div#search-container' );
+    var $searchField           = $searchContainer.find( 'input#search-term' );
+    var $searchResultContainer = $searchContainer.find( 'div#search-results' );
+    $searchField.on( 'keyup', function() {
+	$searchResultContainer.empty();
+	var searchText = $searchField.val();
+	if( !searchText || (searchText = searchText.trim()).length < 3 ) 
+	    return; // Clear search?
+
+	var jqxhr = $.getJSON( 'ajax/search.ajax.php?cat=' + encodeURIComponent(CATEGORY) + '&search=' + encodeURIComponent(searchText) )
+	    .done( function( json ) {
+		console.debug( JSON.stringify(json) );
+		//if( json.count == 0 )
+		//    return;
+		// Display search result
+		json.list.forEach( function(noteData) {
+		    if( noteData.data.length > 64 )
+			noteData.data = noteData.data.substring(0,64) + '&hellip;';
+		    var $note = createResultNode( noteData );
+		    //var $note = $( '<div/>' ).html( '<a href=
+		    // Attach to DOM.
+		    $searchResultContainer.append( $note );
+		} );
+	    } )
+	    .fail( function(jqxhr, textStatus, error) {
+		setErrorStatus( error + ": " + textStatus + " " + jqxhr.responseJSON.message );
+	    } )
+	    .always( function() {
+		
+	    } );	
+    } );
+    
+    
 
     /**
      * Initialize the drop zone.
@@ -442,7 +480,6 @@ $( document ).ready( function() {
 		maxFilesize        : 2, // MB
 		addRemoveLinks     : true,
 		maxFiles           : 5,
-		//previewsContainer  : '#upload-preview',
 		thumbnailWidth     : 64,
 		thumbnailHeight    : 64,
 		dictDefaultMessage : 'Drag an image here to upload, or click to select one.',

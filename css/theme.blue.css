@@ -68,6 +68,14 @@ div#category-list h4 { }
 
 div#category-list > ul { }
 
+div#search-container { }
+
+div#search-container input#search-term { }
+
+div#search-container div#search-results { }
+
+div#search-container div#search-results div.note-container { }
+
 div.note-container {
     border              : 1px solid #44658c;
     border-bottom-color : white;

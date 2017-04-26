@@ -98,6 +98,9 @@ HTML
 
 Changelog
 =========
+[2017-04-26, Ika, v1.1.2]
+ * Added the search bar.
+ 
 [2017-04-12, Ika, v1.1.1]
  * The uploaded does not support non-image files, too.
    (using the Free-file-icons theme 

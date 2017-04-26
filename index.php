@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="description" content="Content Description" />
-    <meta name="keywords" content="This is not twitter, hundredforty, hundredforty, shoutbox" />
+    <meta name="keywords" content="This is not twitter, hundredforty, shoutbox" />
     <meta name="author" content="Ikaros Kappler" />
     <meta name="date" content="2016-12-01" />
 
@@ -46,6 +46,20 @@
          <div id="category-list">
             <h4>Categories</h4>
             <ul></ul>
+
+            <div id="search-container">
+                <input type="text" id="search-term" placeholder="Search" />
+                <div id="search-results">
+      
+                   <div id="_template-result" class="note-container hidden">
+                      <div id="_template-author" class="note-author"></div>
+                      <div id="_template-date" class="note-date"></div>
+                      <div id="_template-data" class="note-data dont-break-out"></div>
+                      <div id="_template-media"></div>
+                   </div>
+     
+                </div>
+            </div>
          </div>
       
          <!-- Invisible by default -->

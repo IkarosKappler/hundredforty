@@ -435,33 +435,41 @@ $( document ).ready( function() {
     var $searchContainer       = $( 'div#search-container' );
     var $searchField           = $searchContainer.find( 'input#search-term' );
     var $searchResultContainer = $searchContainer.find( 'div#search-results' );
+    var latestSearchInputTime  = Date.now();
     $searchField.on( 'keyup', function() {
 	$searchResultContainer.empty();
 	var searchText = $searchField.val();
 	if( !searchText || (searchText = searchText.trim()).length < 3 ) 
 	    return; // Clear search?
 
-	var jqxhr = $.getJSON( 'ajax/search.ajax.php?cat=' + encodeURIComponent(CATEGORY) + '&search=' + encodeURIComponent(searchText) )
-	    .done( function( json ) {
-		console.debug( JSON.stringify(json) );
-		//if( json.count == 0 )
-		//    return;
-		// Display search result
-		json.list.forEach( function(noteData) {
-		    if( noteData.data.length > 64 )
-			noteData.data = noteData.data.substring(0,64) + '&hellip;';
-		    var $note = createResultNode( noteData );
-		    //var $note = $( '<div/>' ).html( '<a href=
-		    // Attach to DOM.
-		    $searchResultContainer.append( $note );
+	// Install some search delay and input speed measurements. Delay=300ms.
+	var myInputTime = latestSearchInputTime = Date.now();
+	window.setTimeout( function() {
+	    console.debug( 'Search for ' + searchText + ' requested ... ' );
+	    if( myInputTime < latestSearchInputTime )
+		return;
+	    console.debug( 'Search for ' + searchText + ' being performed.' );	    
+	    var jqxhr = $.getJSON( 'ajax/search.ajax.php?cat=' + encodeURIComponent(CATEGORY) + '&search=' + encodeURIComponent(searchText) )
+		.done( function( json ) {
+		    // console.debug( JSON.stringify(json) );
+		    // Display search result
+		    json.list.forEach( function(noteData) {
+			// Shorten note to 64 chars?
+			//if( noteData.data.length > 64 )
+			//	noteData.data = noteData.data.substring(0,64) + '&hellip;';
+			var $note = createResultNode( noteData );
+			//var $note = $( '<div/>' ).html( '<a href=
+			// Attach to DOM.
+			$searchResultContainer.append( $note );
+		    } );
+		} )
+		.fail( function(jqxhr, textStatus, error) {
+		    setErrorStatus( error + ": " + textStatus + " " + jqxhr.responseJSON.message );
+		} )
+		.always( function() {
+		    
 		} );
-	    } )
-	    .fail( function(jqxhr, textStatus, error) {
-		setErrorStatus( error + ": " + textStatus + " " + jqxhr.responseJSON.message );
-	    } )
-	    .always( function() {
-		
-	    } );	
+	}, 300 ); // END window.setTimeout
     } );
     
     

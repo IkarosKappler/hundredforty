@@ -97,9 +97,8 @@
            Debian Jessie<br/>
            FontAwesome (Icons)<br/>
 
-          <div id="delete-dialog">
 
-          </div>
+          <div id="delete-dialog"></div>
       
          </div>
       </div>

@@ -13,14 +13,15 @@
  * @modified 2017-02-19 Added the RSS icon plus link.
  * @modified 2017-02-25 Added URL shortener hook.
  * @modified 2017-04-12 Added non-image file uploads.
+ * @modified 2017-03-25 Added author.
+ * @modified 2017-04-26 Added the search bar.
+ * @modified 2017-04-27 Fixed the search async collisio issue by adding 'id'.
  *
  * @require jQuery
  * @optional URLShortener
  *
  * @date     2016-12-01
- * @modified 2017-03-25 (Added author).
- * @modified 2017-04-26 (Added the search bar).
- * @version  1.1.2
+ * @version  1.1.3
  **/
 
 
@@ -246,28 +247,22 @@ $( document ).ready( function() {
     }
 
     var createResultNode = function( noteData ) {
-	console.log( 'Creating result node from result template ... ' + $resultTemplate.attr('id') );
 	return createNodeFromTemplate( noteData, $resultTemplate, 'result_' );
     }
 
     var createNodeFromTemplate = function( noteData, $templ, baseID ) {
-	//var $container = $hundredforty.find( '#notes' );
-
 	var $linkImage = $( '<img/>', { src : 'img/link_symbol.svg', width : 16, height : 16 } ).css( { width : '16px', height : '16px' } );
-	
-	// var newID      = 'template-data-'+noteData.id; 
 	var $note      = $templ.clone().removeClass('hidden').attr('id',baseID+noteData.id);
 	$note.data('created_at_ts',noteData['created_at_ts']);
 	var $showLink  = $( '<a/>', { href   : '?cat=' + encodeURIComponent(CATEGORY) + '&id=' + encodeURIComponent(noteData.id) + '&key=' + encodeURIComponent(noteData.sha256),
 				      name   : 'note_'+noteData.id,
 				      target : '_blank'
 				    } ).addClass('inner-link').addClass('clickable').html( $linkImage );
-	$note.find( '#_template-author' ).attr('id',baseID+'template-author-'+noteData.id).empty().html( noteData.author );
-	$note.find( '#_template-date' ).attr('id',baseID+'template-date-'+noteData.id).empty().html( $showLink ).append( ' '+noteData.created_at );
+	$note.find( '.note-author' ).attr('id',baseID+'template-author-'+noteData.id).empty().html( noteData.author );
+	$note.find( '.note-date' ).attr('id',baseID+'template-date-'+noteData.id).empty().html( $showLink ).append( ' '+noteData.created_at );
 	$note.find('a.boxclose').click( function() { requestDelete(noteData); } );
-	//console.debug(noteData.data);
-	$note.find( '#_template-data' ).attr('id',baseID+'data-'+noteData.id).empty().html( formatText(noteData.data) ).linkify().hashtagify();
-	$mediaContainer = $note.find( '#_template-media' ).attr('id',baseID+'template-media-'+noteData.id);
+	$note.find( '.note-data' ).attr('id',baseID+'data-'+noteData.id).empty().html( formatText(noteData.data) ).linkify().hashtagify();
+	$mediaContainer = $note.find( '.note-media' ).attr('id',baseID+'template-media-'+noteData.id);
 	appendImagesToNoteNode( $mediaContainer, noteData );
 	return $note;
     };
@@ -279,15 +274,11 @@ $( document ).ready( function() {
 	if( !noteData.image_refs )
 	    return;
 	var imageRefs = noteData.image_refs;
-	//console.debug( 'imageRefs=' + imageRefs );
 	if( (typeof imageRefs) == 'string' )
 	    imageRefs = jQuery.parseJSON(imageRefs);
 	for( var i in imageRefs ) {
-	    //console.debug( 'imageRefs['+i+']=' + JSON.stringify(imageRefs[i]) + ", type " + (typeof imageRefs[i]) + ", URI=" + imageRefs[i].uri );
 	    if( (typeof imageRefs[i]) == 'object' && imageRefs[i]['uri'] !== undefined ) {
-		//console.debug( "Adding image ... ");
-		var thumbnail = fallback( imageRefs[i].thumbnail, imageRefs[i].uri );
-		
+		var thumbnail = fallback( imageRefs[i].thumbnail, imageRefs[i].uri );		
 		$container.append( $( '<a/>', { href : _IMAGE_URL_BASE + imageRefs[i].uri, target : '_blank' } ).append( $('<img/>', { src : _IMAGE_URL_BASE + thumbnail } ).addClass('preview-image') ) );
 	    }
 	}
@@ -386,7 +377,6 @@ $( document ).ready( function() {
 	else                              since = $template.data('created_at_ts');
 	var jqxhr = $.getJSON( 'ajax/checknew.ajax.php?cat=' + encodeURIComponent(CATEGORY) + '&since=' + since )
 		.done( function( json ) {
-		    //console.debug( JSON.stringify(json) );
 		    if( json.count == 0 )
 			return;
 		    // Show 'load new button'
@@ -436,29 +426,34 @@ $( document ).ready( function() {
     var $searchField           = $searchContainer.find( 'input#search-term' );
     var $searchResultContainer = $searchContainer.find( 'div#search-results' );
     var latestSearchInputTime  = Date.now();
+    var latestSearchID         = null;
     $searchField.on( 'keyup', function() {
 	$searchResultContainer.empty();
 	var searchText = $searchField.val();
 	if( !searchText || (searchText = searchText.trim()).length < 3 ) 
-	    return; // Clear search?
+	    return;
 
 	// Install some search delay and input speed measurements. Delay=300ms.
+	var mySearchID  = latestSearchID        = Math.random()*65535;
 	var myInputTime = latestSearchInputTime = Date.now();
 	window.setTimeout( function() {
 	    console.debug( 'Search for ' + searchText + ' requested ... ' );
+	    // Avoid multiple search requests being sent upon fast typing user.
 	    if( myInputTime < latestSearchInputTime )
 		return;
 	    console.debug( 'Search for ' + searchText + ' being performed.' );	    
-	    var jqxhr = $.getJSON( 'ajax/search.ajax.php?cat=' + encodeURIComponent(CATEGORY) + '&search=' + encodeURIComponent(searchText) )
+	    var jqxhr = $.getJSON( 'ajax/search.ajax.php?cat=' + encodeURIComponent(CATEGORY) + '&id=' + encodeURIComponent(mySearchID) + '&search=' + encodeURIComponent(searchText) )
 		.done( function( json ) {
 		    // console.debug( JSON.stringify(json) );
+		    // Avoid outdated async search results (sent with different ID).
+		    if( latestSearchID != json.meta.id )
+			return;
 		    // Display search result
 		    json.list.forEach( function(noteData) {
 			// Shorten note to 64 chars?
 			//if( noteData.data.length > 64 )
 			//	noteData.data = noteData.data.substring(0,64) + '&hellip;';
 			var $note = createResultNode( noteData );
-			//var $note = $( '<div/>' ).html( '<a href=
 			// Attach to DOM.
 			$searchResultContainer.append( $note );
 		    } );
@@ -485,7 +480,7 @@ $( document ).ready( function() {
 		method             : 'post',
 		// withCredentials    : true,     // DO NOT SET FOR CORS!
 		paramName          : 'file',
-		maxFilesize        : 2, // MB
+		maxFilesize        : 4, // MB
 		addRemoveLinks     : true,
 		maxFiles           : 5,
 		thumbnailWidth     : 64,
@@ -510,9 +505,13 @@ $( document ).ready( function() {
 			//  {   uri : ...,
 			//    [ dimensions : { '64x64' : { uri : ... } } ]
 			//  }
-			$uploadWidget.append( $( '<input/>',
-						 { type : 'hidden', name : 'input_'+Math.floor(Math.random()*65535) }
+			var id = 'input_'+Math.floor(Math.random()*65535);
+			// $uploadWidget
+			$( file.previewElement ).append( $( '<input/>',
+						 { type : 'hidden', name : id }
 					       ).data('upload-info',jQuery.parseJSON(response)).addClass('upload-info') );
+			// Also store the new ID to the preview element
+			// file.previewElement.id = id;
 		    });
 		    this.on('error', function(file, response) {
 			console.error( "Failed to upload file!" );

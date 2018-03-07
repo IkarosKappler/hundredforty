@@ -3,7 +3,6 @@
   <head>
     <title>// hundredforty //</title>
     <meta charset="UTF-8" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="description" content="Content Description" />
     <meta name="keywords" content="This is not twitter, hundredforty, shoutbox" />
     <meta name="author" content="Ikaros Kappler" />
@@ -33,7 +32,7 @@
       <div id="hundredforty">
       <h1>//hundredforty//</h1>
          <div id="input-container">
-            <div id="author-container"><input type="text" id="author" placeholder="Nickname" maxlen="16" /></div>
+            <div id="author-container"><input type="text" id="author" placeholder="Nickname" maxlength="16" /></div>
             <textarea id="note-text" placeholder="Deine Nachricht | Your message"></textarea><br/>
             <div id="sub-input">
                <button id="btn-sendnote">Send</button>
@@ -52,10 +51,10 @@
                 <div id="search-results">
       
                    <div id="_template-result" class="note-container hidden">
-                      <div id="_template-author" class="note-author"></div>
-                      <div id="_template-date" class="note-date"></div>
-                      <div id="_template-data" class="note-data dont-break-out"></div>
-                      <div id="_template-media"></div>
+                      <div class="note-author"></div>
+                      <div class="note-date"></div>
+                      <div class="note-data dont-break-out"></div>
+                      <div class="note-media"></div>
                    </div>
      
                 </div>
@@ -70,10 +69,10 @@
          <div id="notes">
             <div id="_template-note" class="note-container hidden">
                <a class="boxclose"></a>
-               <div id="_template-author" class="note-author"></div>
-               <div id="_template-date" class="note-date"></div>
-               <div id="_template-data" class="note-data dont-break-out"></div>
-               <div id="_template-media"></div>
+               <div class="note-author"></div>
+               <div class="note-date"></div>
+               <div class="note-data dont-break-out"></div>
+               <div class="note-media"></div>
             </div>
          </div>
          <button id="btn-more">Load more</button>
@@ -82,9 +81,9 @@
          <div id="hint">
             Hello there. I just wrote this app and wanted to give my jQuery and Eloquent skills a try. This app stores your 140 character message and displays it here. I hope you like it.<br/>
            <br/>
-           Built with</br>
+           Built with<br/>
            jQuery<br/>
-           Eloquent PDO</br>
+           Eloquent PDO<br/>
            jQuery-linkify<br/>
            <br/>
            and the other ordinary stuff<br/>
